@@ -4,7 +4,12 @@ import { TextInput } from 'react-native-gesture-handler'
 
 import { AntDesign } from '@expo/vector-icons'
 
-export default function SearchBar({ search, setSearch }) {
+export default function SearchBar({ search, setSearch, setFiltered }) {
+  const handleReset = () => {
+    setSearch('')
+    setFiltered('')
+  }
+
   return (
     <View style={styles.container}>
       <TextInput
@@ -15,7 +20,7 @@ export default function SearchBar({ search, setSearch }) {
         value={search}
       />
       {search !== '' && (
-        <TouchableOpacity onPress={() => setSearch('')} style={styles.icon}>
+        <TouchableOpacity onPress={handleReset} style={styles.icon}>
           <AntDesign name='closecircle' size={16} color='grey' />
         </TouchableOpacity>
       )}

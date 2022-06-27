@@ -12,11 +12,12 @@ import { addRecent } from '../../store/recentSlice'
 
 const suggestions = ['Lighting', 'Umbrela', 'Fire&Heat']
 
-export default function Trends({ search, setSearch }) {
+export default function Trends({ search, setSearch, filtered, setFiltered }) {
   const dispatch = useDispatch()
 
   const searchHandler = (item) => {
     setSearch(item)
+    setFiltered(item)
     dispatch(addRecent(item))
   }
 
