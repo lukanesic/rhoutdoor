@@ -25,6 +25,7 @@ const Search = () => {
       />
 
       {filtered !== '' && <SearchResults />}
+
       {filtered === '' && (
         <ScrollView showsVerticalScrollIndicator={false}>
           <Trends
