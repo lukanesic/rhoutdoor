@@ -2,13 +2,16 @@ import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
-export default function Help() {
+export default function Help({ navigation }) {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.btn} activeOpacity={0.7}>
         <Text style={styles.btnTxt}>Help</Text>
       </TouchableOpacity>
-      <TouchableOpacity activeOpacity={0.7}>
+      <TouchableOpacity
+        activeOpacity={0.7}
+        onPress={() => navigation.replace('Signup')}
+      >
         <Text style={styles.li}>
           Don't have an Account?{' '}
           <Text
@@ -29,7 +32,7 @@ export default function Help() {
 const styles = StyleSheet.create({
   container: {
     marginLeft: 45,
-    marginTop: 100,
+    marginTop: 70,
   },
   btn: {
     borderWidth: 1,
@@ -37,12 +40,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     padding: 12,
     marginVertical: 20,
-    width: 100,
+    width: 130,
   },
   btnTxt: {
     textAlign: 'center',
     textTransform: 'uppercase',
     fontWeight: '500',
+    fontSize: 12,
   },
   li: {
     color: '#fff',
