@@ -90,7 +90,10 @@ export default function SForm({ navigation }) {
 
   return (
     <>
-      <TouchableOpacity onPress={onSubmit} style={styles.continue}>
+      <TouchableOpacity
+        onPress={() => navigation.replace('SignupSuccess')}
+        style={styles.continue}
+      >
         <Text style={styles.continueTxt}>Continue</Text>
       </TouchableOpacity>
       <Pressable onPress={Keyboard.dismiss}>
