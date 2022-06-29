@@ -1,4 +1,10 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native'
 import React from 'react'
 
 import Title from './../components/Title'
@@ -6,11 +12,13 @@ import Form from '../components/profile/login/Form'
 import Help from '../components/profile/login/Help'
 
 import RForm from '../components/profile/recovery/RForm'
+import SForm from '../components/profile/signup/SForm'
 
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 
 import { Ionicons } from '@expo/vector-icons'
+import Latest from '../components/profile/signup/Latest'
 
 const Stack = createStackNavigator()
 
@@ -32,34 +40,47 @@ export default function Profile() {
 
 const Login = ({ navigation }) => {
   return (
-    <View style={styles.loginContainer}>
+    <ScrollView style={styles.loginContainer}>
       <Title />
       <Form navigation={navigation} />
       <Help navigation={navigation} />
-    </View>
+    </ScrollView>
   )
 }
 
 const PasswordRecovery = ({ navigation }) => {
   return (
-    <View style={styles.recoveryContainer}>
+    <>
       <TouchableOpacity
         onPress={() => navigation.navigate('Login')}
         style={styles.icon}
       >
         <Ionicons name='arrow-back' size={34} color='black' />
       </TouchableOpacity>
-      <Title color={'#000'} />
-      <RForm />
-    </View>
+      <ScrollView style={styles.recoveryContainer}>
+        <Title color={'#000'} />
+        <RForm />
+      </ScrollView>
+    </>
   )
 }
 
-const SignUp = () => {
+const SignUp = ({ navigation }) => {
   return (
-    <View>
-      <Text>Sign</Text>
-    </View>
+    <>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('Login')}
+        style={styles.icon}
+      >
+        <Ionicons name='arrow-back' size={34} color='black' />
+      </TouchableOpacity>
+
+      <ScrollView style={styles.recoveryContainer}>
+        <Title color={'#000'} />
+        <SForm navigation={navigation} />
+        <Latest />
+      </ScrollView>
+    </>
   )
 }
 
@@ -76,5 +97,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 30,
     left: 20,
+    zIndex: 1000,
   },
 })
