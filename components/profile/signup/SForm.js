@@ -5,10 +5,10 @@ import {
   Text,
   TouchableOpacity,
   View,
+  ScrollView,
 } from 'react-native'
 import React, { useState } from 'react'
-import { FloatingLabel } from '../login/Form'
-import { ScrollView } from 'react-native-gesture-handler'
+import { FloatingLabel } from '../../FloatingLabel'
 
 import { AntDesign } from '@expo/vector-icons'
 

@@ -1,7 +1,8 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import { TextInput } from 'react-native-gesture-handler'
-import { FloatingLabel } from '../login/Form'
+
+import { FloatingLabel } from '../../FloatingLabel'
 
 export default function RForm() {
   const [email, setEmail] = useState('')

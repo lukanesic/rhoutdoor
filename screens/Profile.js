@@ -10,22 +10,22 @@ import React, { useEffect, useState } from 'react'
 
 import Title from './../components/Title'
 import Form, { FloatingLabel } from '../components/profile/login/Form'
-import Help from '../components/profile/login/Help'
-
-import RForm from '../components/profile/recovery/RForm'
-import SForm from '../components/profile/signup/SForm'
 
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 
 import { Ionicons } from '@expo/vector-icons'
-import Latest from '../components/profile/signup/Latest'
+
 import Categories from '../components/profile/user/Categories'
 import Purchases from '../components/profile/user/Purchases'
 
 import ProfileTab, {
   ForwardScreen,
 } from '../components/profile/user/ProfileTab'
+import Login from './Profile/NotAuthStack/Login'
+import Recovery from './Profile/NotAuthStack/Recovery'
+import Signup from './Profile/NotAuthStack/Signup'
+import UserProfile from './Profile/AuthStack/UserProfile'
 
 const Stack = createStackNavigator()
 
@@ -37,10 +37,14 @@ export default function Profile() {
           headerShown: false,
         }}
       >
+        {/* NOT AUTH STACK */}
         <Stack.Screen name='Login' component={Login} />
-        <Stack.Screen name='Recovery' component={PasswordRecovery} />
-        <Stack.Screen name='Signup' component={SignUp} />
+        <Stack.Screen name='Recovery' component={Recovery} />
+        <Stack.Screen name='Signup' component={Signup} />
+
+        {/* Loading to AUTH STACK */}
         <Stack.Screen name='SignupSuccess' component={SignupSuccess} />
+
         <Stack.Screen name='UserProfile' component={UserProfile} />
         <Stack.Screen name='ManageAccount' component={ManageAccount} />
         <Stack.Screen name='ManageAddress' component={ManageAddress} />
@@ -49,54 +53,6 @@ export default function Profile() {
         <Stack.Screen name='ChangePassword' component={ChangePassword} />
       </Stack.Navigator>
     </NavigationContainer>
-  )
-}
-
-// PODELITI STACK NA AUTH I !AUTH
-
-const Login = ({ navigation }) => {
-  return (
-    <ScrollView style={styles.loginContainer}>
-      <Title />
-      <Form navigation={navigation} />
-      <Help navigation={navigation} />
-    </ScrollView>
-  )
-}
-
-const PasswordRecovery = ({ navigation }) => {
-  return (
-    <>
-      <TouchableOpacity
-        onPress={() => navigation.navigate('Login')}
-        style={styles.icon}
-      >
-        <Ionicons name='arrow-back' size={34} color='black' />
-      </TouchableOpacity>
-      <ScrollView style={styles.recoveryContainer}>
-        <Title color={'#000'} />
-        <RForm />
-      </ScrollView>
-    </>
-  )
-}
-
-const SignUp = ({ navigation }) => {
-  return (
-    <>
-      <TouchableOpacity
-        onPress={() => navigation.navigate('Login')}
-        style={styles.icon}
-      >
-        <Ionicons name='arrow-back' size={34} color='black' />
-      </TouchableOpacity>
-
-      <ScrollView style={styles.recoveryContainer}>
-        <Title color={'#000'} />
-        <SForm navigation={navigation} />
-        <Latest />
-      </ScrollView>
-    </>
   )
 }
 
@@ -111,23 +67,6 @@ const SignupSuccess = ({ navigation }) => {
     <View style={styles.signupSuccess}>
       <ActivityIndicator size='small' color='#0000ff' />
       <Text style={styles.loadingtxt}>Loading</Text>
-    </View>
-  )
-}
-
-// IF USER AUTH
-
-const UserProfile = ({ navigation }) => {
-  const [activeTab, setActiveTab] = useState('Purchases')
-
-  return (
-    <View style={styles.recoveryContainer}>
-      <Title color={'#000'} />
-      <Categories active={activeTab} setActive={setActiveTab} />
-      <View style={styles.activeTabContainer}>
-        {activeTab === 'Purchases' && <Purchases />}
-        {activeTab === 'Profile' && <ProfileTab navigation={navigation} />}
-      </View>
     </View>
   )
 }
@@ -265,14 +204,6 @@ const ManageAddress = () => {
 }
 
 const styles = StyleSheet.create({
-  loginContainer: {
-    flex: 1,
-    backgroundColor: '#000',
-  },
-  recoveryContainer: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
   signupSuccess: {
     flex: 1,
     backgroundColor: '#fff',
@@ -290,9 +221,6 @@ const styles = StyleSheet.create({
     top: 30,
     left: 20,
     zIndex: 1000,
-  },
-  activeTabContainer: {
-    marginHorizontal: 29,
   },
   manageContainer: {
     flex: 1,
