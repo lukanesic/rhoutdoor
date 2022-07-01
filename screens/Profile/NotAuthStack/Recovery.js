@@ -9,7 +9,7 @@ export default function Recovery({ navigation }) {
   return (
     <>
       {/* GOBACK SOLUTION */}
-      <BackIcon onPress={() => navigation.replace('Login')} />
+      <BackIcon onPress={() => navigation.navigate('Login')} />
       <ScrollView style={styles.recoveryContainer}>
         <Title color={'#000'} />
         <RForm />

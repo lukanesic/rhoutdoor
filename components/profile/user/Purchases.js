@@ -1,7 +1,15 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Dimensions,
+} from 'react-native'
 import React, { useState } from 'react'
 
 import { FontAwesome } from '@expo/vector-icons'
+
+const { width } = Dimensions.get('window')
 
 const tabs = ['Online', 'Returns']
 
@@ -9,7 +17,7 @@ export default function Purchases() {
   const [active, setActive] = useState('Online')
 
   return (
-    <View>
+    <View style={styles.container}>
       <View style={styles.tabsContainer}>
         {tabs.map((tab, index) => (
           <TouchableOpacity key={index} onPress={() => setActive(tab)}>
@@ -48,6 +56,10 @@ const Returns = () => {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    width: width,
+    paddingHorizontal: 30,
+  },
   tabsContainer: {
     display: 'flex',
     flexDirection: 'row',

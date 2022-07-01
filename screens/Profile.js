@@ -8,7 +8,6 @@ import {
 } from 'react-native'
 import React, { useEffect, useState } from 'react'
 
-import Title from './../components/Title'
 import Form, { FloatingLabel } from '../components/profile/login/Form'
 
 import { NavigationContainer } from '@react-navigation/native'
@@ -16,16 +15,9 @@ import { createStackNavigator } from '@react-navigation/stack'
 
 import { Ionicons } from '@expo/vector-icons'
 
-import Categories from '../components/profile/user/Categories'
-import Purchases from '../components/profile/user/Purchases'
-
-import ProfileTab, {
-  ForwardScreen,
-} from '../components/profile/user/ProfileTab'
-import Login from './Profile/NotAuthStack/Login'
-import Recovery from './Profile/NotAuthStack/Recovery'
-import Signup from './Profile/NotAuthStack/Signup'
 import UserProfile from './Profile/AuthStack/UserProfile'
+import ManageAccount from './Profile/AuthStack/ManageAccount'
+import ManageAddresses from './Profile/AuthStack/ManageAddresses'
 
 const Stack = createStackNavigator()
 
@@ -38,16 +30,16 @@ export default function Profile() {
         }}
       >
         {/* NOT AUTH STACK */}
-        <Stack.Screen name='Login' component={Login} />
+        {/* <Stack.Screen name='Login' component={Login} />
         <Stack.Screen name='Recovery' component={Recovery} />
-        <Stack.Screen name='Signup' component={Signup} />
+        <Stack.Screen name='Signup' component={Signup} /> */}
 
         {/* Loading to AUTH STACK */}
-        <Stack.Screen name='SignupSuccess' component={SignupSuccess} />
+        {/* <Stack.Screen name='SignupSuccess' component={SignupSuccess} /> */}
 
         <Stack.Screen name='UserProfile' component={UserProfile} />
         <Stack.Screen name='ManageAccount' component={ManageAccount} />
-        <Stack.Screen name='ManageAddress' component={ManageAddress} />
+        <Stack.Screen name='ManageAddress' component={ManageAddresses} />
 
         <Stack.Screen name='ChangeEmail' component={ChangeEmail} />
         <Stack.Screen name='ChangePassword' component={ChangePassword} />
@@ -68,46 +60,6 @@ const SignupSuccess = ({ navigation }) => {
       <ActivityIndicator size='small' color='#0000ff' />
       <Text style={styles.loadingtxt}>Loading</Text>
     </View>
-  )
-}
-
-const ManageAccount = ({ navigation }) => {
-  return (
-    <>
-      <TouchableOpacity
-        onPress={() => navigation.navigate('UserProfile')}
-        style={styles.icon}
-      >
-        <Ionicons name='arrow-back' size={34} color='black' />
-      </TouchableOpacity>
-
-      <ScrollView style={styles.manageContainer}>
-        <Text style={styles.manageTitle}>Account</Text>
-        <View>
-          <ForwardScreen
-            title={'Change e-mail'}
-            onPress={() => navigation.replace('ChangeEmail')}
-          />
-          <ForwardScreen
-            title={'Change password'}
-            onPress={() => navigation.replace('ChangePassword')}
-          />
-          <ForwardScreen
-            title={'Delete your account'}
-            onPress={() => console.log('1')}
-          />
-        </View>
-
-        <TouchableOpacity
-          style={styles.manageBtn}
-          onPress={() => console.log('end')}
-          activeOpacity={0.6}
-        >
-          {/* LOGOUT */}
-          <Text style={styles.manageBtnTxt}>End session</Text>
-        </TouchableOpacity>
-      </ScrollView>
-    </>
   )
 }
 

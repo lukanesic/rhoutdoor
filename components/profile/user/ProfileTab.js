@@ -1,7 +1,16 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Dimensions,
+} from 'react-native'
 import React from 'react'
 
 import { MaterialIcons } from '@expo/vector-icons'
+import ForwardScreen from '../../ForwardScreen'
+
+const { width } = Dimensions.get('window')
 
 export default function ProfileTab({ navigation }) {
   return (
@@ -30,17 +39,12 @@ export default function ProfileTab({ navigation }) {
   )
 }
 
-export const ForwardScreen = ({ title, onPress }) => {
-  return (
-    <TouchableOpacity style={styles.screensContainer} onPress={onPress}>
-      <Text style={styles.screenTxt}>{title}</Text>
-      <MaterialIcons name='arrow-forward-ios' size={18} color='gray' />
-    </TouchableOpacity>
-  )
-}
-
 const styles = StyleSheet.create({
-  container: { marginTop: 10 },
+  container: {
+    marginTop: 10,
+    width: width,
+    paddingHorizontal: 30,
+  },
   name: {
     fontWeight: 'bold',
     marginVertical: 5,
@@ -53,20 +57,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     textTransform: 'uppercase',
   },
-  screensContainer: {
-    marginTop: 30,
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  screenTxt: {
-    fontWeight: 'bold',
-    marginVertical: 5,
-    textTransform: 'uppercase',
-    color: '#282828',
-    fontSize: 12,
-  },
+
   privacyContainer: {
     marginTop: 50,
   },
