@@ -8,9 +8,10 @@ import {
   ScrollView,
 } from 'react-native'
 import React, { useState } from 'react'
-import { FloatingLabel } from '../../FloatingLabel'
 
-import { AntDesign } from '@expo/vector-icons'
+import { FloatingLabel } from '../../FloatingLabel'
+import ContinueBtn from '../../ContinueBtn'
+import ValidationMessage from '../../ValidationMessage'
 
 export default function SForm({ navigation }) {
   const [inputs, setInputs] = useState({
@@ -90,12 +91,7 @@ export default function SForm({ navigation }) {
 
   return (
     <>
-      <TouchableOpacity
-        onPress={() => navigation.replace('SignupSuccess')}
-        style={styles.continue}
-      >
-        <Text style={styles.continueTxt}>Continue</Text>
-      </TouchableOpacity>
+      <ContinueBtn onPress={() => navigation.replace('SignupSuccess')} />
       <Pressable onPress={Keyboard.dismiss}>
         <View style={styles.container}>
           <Text style={styles.title}>Personal Details</Text>
@@ -171,46 +167,14 @@ export default function SForm({ navigation }) {
   )
 }
 
-const ValidationMessage = ({ message }) => {
-  return (
-    <View style={styles.validateContainer}>
-      <AntDesign name='exclamationcircleo' size={12} color='red' />
-      <Text style={styles.validate}>{message}</Text>
-    </View>
-  )
-}
-
 const styles = StyleSheet.create({
   container: {
-    marginTop: 200,
+    marginTop: 220,
     marginLeft: 45,
     marginRight: 45,
   },
   title: {
     fontSize: 20,
     textTransform: 'uppercase',
-  },
-  continue: {
-    position: 'absolute',
-    top: 45,
-    right: 20,
-    zIndex: 1000,
-  },
-  continueTxt: {
-    fontSize: 14,
-    fontWeight: '500',
-    textTransform: 'uppercase',
-  },
-  validateContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 5,
-  },
-  validate: {
-    color: '#ff1c1b',
-
-    fontSize: 12,
-    marginLeft: 5,
   },
 })

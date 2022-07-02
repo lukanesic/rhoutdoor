@@ -9,6 +9,7 @@ import React from 'react'
 
 import BackIcon from './../../../components/BackIcon'
 import ForwardScreen from '../../../components/ForwardScreen'
+import Btn from '../../../components/profile/user/Btn'
 
 export default function ManageAddresses({ navigation }) {
   return (
@@ -19,7 +20,11 @@ export default function ManageAddresses({ navigation }) {
         <Text style={styles.manageTitle}>Addresses</Text>
 
         {/* Map ako ima vise naravno */}
-        <Address name={'Customer'} country={'Serbia'} />
+        <Address
+          name={'Customer'}
+          country={'Serbia'}
+          onPress={() => navigation.navigate('EditAddress')}
+        />
         <Address name={'Customer'} country={'Serbia'} />
         <Address name={'Customer'} country={'Serbia'} />
         <Address name={'Customer'} country={'Serbia'} />
@@ -27,7 +32,7 @@ export default function ManageAddresses({ navigation }) {
 
       <TouchableOpacity
         style={styles.btnContainer}
-        onPress={() => console.log('Add new address functionality')}
+        onPress={() => navigation.navigate('EditAddress')}
       >
         <Text style={styles.btnTxt}>Add another Address</Text>
       </TouchableOpacity>
@@ -35,10 +40,10 @@ export default function ManageAddresses({ navigation }) {
   )
 }
 
-const Address = ({ name, country }) => {
+const Address = ({ name, country, onPress }) => {
   return (
     <View>
-      <ForwardScreen title={name} onPress={() => console.log('ToEditScreen')} />
+      <ForwardScreen title={name} onPress={onPress} />
       <View>
         <Text style={styles.countryTxt}>Edit</Text>
       </View>

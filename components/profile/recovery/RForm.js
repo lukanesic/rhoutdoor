@@ -35,7 +35,7 @@ export default function RForm() {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 200,
+    marginTop: 220,
     marginLeft: 45,
     marginRight: 45,
   },

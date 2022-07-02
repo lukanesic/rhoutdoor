@@ -1,23 +1,20 @@
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  ActivityIndicator,
-} from 'react-native'
-import React, { useEffect, useState } from 'react'
-
-import Form, { FloatingLabel } from '../components/profile/login/Form'
+import { StyleSheet, Text, View, ActivityIndicator } from 'react-native'
+import React, { useEffect } from 'react'
 
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 
-import { Ionicons } from '@expo/vector-icons'
+import Login from './../screens/Profile/NotAuthStack/Login'
+import Signup from './../screens/Profile/NotAuthStack/Signup'
+import Recovery from './../screens/Profile/NotAuthStack/Recovery'
 
 import UserProfile from './Profile/AuthStack/UserProfile'
 import ManageAccount from './Profile/AuthStack/ManageAccount'
 import ManageAddresses from './Profile/AuthStack/ManageAddresses'
+import ChangeEmail from './Profile/AuthStack/ChangeEmail'
+import ChangePassword from './Profile/AuthStack/ChangePassword'
+import DeleteAccount from './Profile/AuthStack/DeleteAccount'
+import EditAddress from './Profile/AuthStack/EditAddress'
 
 const Stack = createStackNavigator()
 
@@ -43,6 +40,9 @@ export default function Profile() {
 
         <Stack.Screen name='ChangeEmail' component={ChangeEmail} />
         <Stack.Screen name='ChangePassword' component={ChangePassword} />
+        <Stack.Screen name='DeleteAccount' component={DeleteAccount} />
+
+        <Stack.Screen name='EditAddress' component={EditAddress} />
       </Stack.Navigator>
     </NavigationContainer>
   )
@@ -62,99 +62,6 @@ const SignupSuccess = ({ navigation }) => {
     </View>
   )
 }
-
-// SUB SCREENS
-// REUSABLE CHANGE COMPONENTS / SCREENS
-const ChangeEmail = ({ navigation }) => {
-  return (
-    <>
-      <TouchableOpacity
-        onPress={() => navigation.navigate('ManageAccount')}
-        style={styles.icon}
-      >
-        <Ionicons name='arrow-back' size={34} color='black' />
-      </TouchableOpacity>
-
-      <ScrollView style={styles.manageContainer}>
-        <Text style={styles.manageTitle}>Change Email</Text>
-        <Text style={styles.changeEmailTxt}>
-          Your current email address is
-          <Text style={{ fontWeight: 'bold' }}> customer@gmail.com</Text>
-        </Text>
-
-        {/* RESITI STATE ZA OVO */}
-        <FloatingLabel
-          label={'Current Password'}
-          textConfig={''}
-          value={''}
-          color={'#000'}
-        />
-        <FloatingLabel
-          label={'New Email'}
-          textConfig={''}
-          value={''}
-          color={'#000'}
-        />
-        <FloatingLabel
-          label={'Repeat New Email Address'}
-          textConfig={''}
-          value={''}
-          color={'#000'}
-        />
-      </ScrollView>
-    </>
-  )
-}
-
-const ChangePassword = ({ navigation }) => {
-  return (
-    <>
-      <TouchableOpacity
-        onPress={() => navigation.navigate('ManageAccount')}
-        style={styles.icon}
-      >
-        <Ionicons name='arrow-back' size={34} color='black' />
-      </TouchableOpacity>
-
-      <ScrollView style={styles.manageContainer}>
-        <Text style={styles.manageTitle}>Change Password</Text>
-        <Text style={styles.changeEmailTxt}>
-          If you wish to change the password to access your account, please
-          provide the following information
-        </Text>
-
-        {/* RESITI STATE ZA OVO */}
-        <FloatingLabel
-          label={'customer@email.com'}
-          textConfig={''}
-          value={''}
-          color={'#000'}
-        />
-        <FloatingLabel
-          label={'Old Password'}
-          textConfig={''}
-          value={''}
-          color={'#000'}
-        />
-        <FloatingLabel
-          label={'New Password'}
-          textConfig={''}
-          value={''}
-          color={'#000'}
-        />
-      </ScrollView>
-    </>
-  )
-}
-
-const ManageAddress = () => {
-  return (
-    <View>
-      <Text>Manage AManageAddress</Text>
-    </View>
-  )
-}
-
 const styles = StyleSheet.create({
   signupSuccess: {
     flex: 1,
@@ -167,41 +74,5 @@ const styles = StyleSheet.create({
     color: '#000',
     fontSize: 16,
     marginTop: 15,
-  },
-  icon: {
-    position: 'absolute',
-    top: 30,
-    left: 20,
-    zIndex: 1000,
-  },
-  manageContainer: {
-    flex: 1,
-    backgroundColor: '#fff',
-    paddingTop: 100,
-    paddingHorizontal: 25,
-  },
-  manageTitle: {
-    fontSize: 20,
-    fontWeight: '600',
-    textTransform: 'uppercase',
-  },
-  manageBtn: {
-    borderWidth: 1,
-    borderColor: '#000',
-    padding: 10,
-    marginVertical: 40,
-    backgroundColor: '#000',
-  },
-  manageBtnTxt: {
-    textAlign: 'center',
-    textTransform: 'uppercase',
-    color: '#fff',
-    fontSize: 12,
-  },
-  changeEmailTxt: {
-    fontSize: 10,
-    color: '#a2a2a2',
-    marginTop: 20,
-    textTransform: 'uppercase',
   },
 })

@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     padding: 15,
-    marginTop: 180,
+    marginTop: 200,
     marginHorizontal: 10,
   },
   text: {

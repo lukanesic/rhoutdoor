@@ -9,6 +9,7 @@ import React from 'react'
 import ForwardScreen from '../../../components/ForwardScreen'
 
 import BackIcon from '../../../components/BackIcon'
+import Btn from '../../../components/profile/user/Btn'
 
 export default function ManageAccount({ navigation }) {
   return (
@@ -28,18 +29,14 @@ export default function ManageAccount({ navigation }) {
           />
           <ForwardScreen
             title={'Delete your account'}
-            onPress={() => console.log('1')}
+            onPress={() => navigation.replace('DeleteAccount')}
           />
         </View>
 
-        <TouchableOpacity
-          style={styles.manageBtn}
-          onPress={() => console.log('end')}
-          activeOpacity={0.6}
-        >
-          {/* LOGOUT */}
-          <Text style={styles.manageBtnTxt}>End session</Text>
-        </TouchableOpacity>
+        <Btn
+          onPress={() => console.log('LOGOUT USER FUNCTIONALITY')}
+          title={'End Session'}
+        />
       </ScrollView>
     </>
   )
@@ -62,18 +59,5 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '600',
     textTransform: 'uppercase',
-  },
-  manageBtn: {
-    borderWidth: 1,
-    borderColor: '#000',
-    padding: 10,
-    marginVertical: 40,
-    backgroundColor: '#000',
-  },
-  manageBtnTxt: {
-    textAlign: 'center',
-    textTransform: 'uppercase',
-    color: '#fff',
-    fontSize: 12,
   },
 })

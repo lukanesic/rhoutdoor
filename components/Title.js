@@ -21,7 +21,7 @@ export default function Title({ color }) {
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    top: 75,
+    top: 95,
     left: 20,
     zIndex: 1000,
   },
