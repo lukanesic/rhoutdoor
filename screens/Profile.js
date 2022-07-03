@@ -27,12 +27,12 @@ export default function Profile() {
         }}
       >
         {/* NOT AUTH STACK */}
-        {/* <Stack.Screen name='Login' component={Login} />
+        <Stack.Screen name='Login' component={Login} />
         <Stack.Screen name='Recovery' component={Recovery} />
-        <Stack.Screen name='Signup' component={Signup} /> */}
+        <Stack.Screen name='Signup' component={Signup} />
 
         {/* Loading to AUTH STACK */}
-        {/* <Stack.Screen name='SignupSuccess' component={SignupSuccess} /> */}
+        <Stack.Screen name='SignupSuccess' component={SignupSuccess} />
 
         <Stack.Screen name='UserProfile' component={UserProfile} />
         <Stack.Screen name='ManageAccount' component={ManageAccount} />
