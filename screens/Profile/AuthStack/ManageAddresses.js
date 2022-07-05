@@ -14,7 +14,7 @@ import Btn from '../../../components/profile/user/Btn'
 export default function ManageAddresses({ navigation }) {
   return (
     <>
-      <BackIcon onPress={() => navigation.replace('UserProfile')} />
+      <BackIcon onPress={() => navigation.navigate('UserProfile')} />
 
       <ScrollView style={styles.manageContainer}>
         <Text style={styles.manageTitle}>Addresses</Text>

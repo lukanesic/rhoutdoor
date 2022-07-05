@@ -93,7 +93,7 @@ export default function SForm({ navigation }) {
     <>
       <ContinueBtn
         title={'Continue'}
-        onPress={() => navigation.replace('SignupSuccess')}
+        onPress={() => navigation.navigate('SignupSuccess')}
       />
       <Pressable onPress={Keyboard.dismiss}>
         <View style={styles.container}>

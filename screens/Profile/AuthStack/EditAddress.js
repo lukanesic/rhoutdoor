@@ -74,7 +74,7 @@ export default function EditAddress({ navigation }) {
 
   return (
     <>
-      <BackIcon onPress={() => navigation.replace('ManageAddress')} />
+      <BackIcon onPress={() => navigation.navigate('ManageAddress')} />
       <ContinueBtn title={'Save'} onPress={onSubmit} />
       <ScrollView style={styles.container}>
         <Change title={'edit address'} />

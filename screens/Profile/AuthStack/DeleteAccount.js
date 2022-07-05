@@ -7,7 +7,7 @@ import Btn from '../../../components/profile/user/Btn'
 export default function DeleteAccount({ navigation }) {
   return (
     <>
-      <BackIcon onPress={() => navigation.replace('ManageAccount')} />
+      <BackIcon onPress={() => navigation.navigate('ManageAccount')} />
 
       <View style={styles.manageContainer}>
         <Change

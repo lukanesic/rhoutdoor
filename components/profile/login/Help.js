@@ -10,7 +10,7 @@ export default function Help({ navigation }) {
       </TouchableOpacity>
       <TouchableOpacity
         activeOpacity={0.7}
-        onPress={() => navigation.replace('Signup')}
+        onPress={() => navigation.navigate('Signup')}
       >
         <Text style={styles.li}>
           Don't have an Account?{' '}

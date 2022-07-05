@@ -20,11 +20,11 @@ export default function ProfileTab({ navigation }) {
 
       <ForwardScreen
         title={'Account'}
-        onPress={() => navigation.replace('ManageAccount')}
+        onPress={() => navigation.navigate('ManageAccount')}
       />
       <ForwardScreen
         title={'Addresses'}
-        onPress={() => navigation.replace('ManageAddress')}
+        onPress={() => navigation.navigate('ManageAddress')}
       />
 
       <View style={styles.privacyContainer}>

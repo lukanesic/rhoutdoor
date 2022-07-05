@@ -1,26 +1,35 @@
-import { View, Text, StyleSheet } from 'react-native'
-import React, { useState } from 'react'
-import Title from '../components/Title'
-import Categories from '../components/menu/Categories'
-import CategoryItems from '../components/menu/CategoryItems'
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+  Dimensions,
+  ScrollView,
+} from 'react-native'
+
+import { NavigationContainer } from '@react-navigation/native'
+import { createStackNavigator } from '@react-navigation/stack'
+const Stack = createStackNavigator()
+
+import SelectCategory from './Menu/SelectCategory'
+import Products from './Menu/Products'
+import Product from './Menu/Product'
 
 const Menu = () => {
-  const [active, setActive] = useState('Furniture')
-
   return (
-    <View style={styles.container}>
-      <Title />
-      <Categories active={active} setActive={setActive} />
-      <CategoryItems active={active} setActive={setActive} />
-    </View>
+    <NavigationContainer independent={true}>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
+        <Stack.Screen name='SelectCategory' component={SelectCategory} />
+        <Stack.Screen name='Products' component={Products} />
+        <Stack.Screen name='Product' component={Product} />
+      </Stack.Navigator>
+    </NavigationContainer>
   )
 }
 
 export default Menu
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#a2a2a2',
-  },
-})

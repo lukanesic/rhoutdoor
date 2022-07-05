@@ -14,22 +14,22 @@ import Btn from '../../../components/profile/user/Btn'
 export default function ManageAccount({ navigation }) {
   return (
     <>
-      <BackIcon onPress={() => navigation.replace('UserProfile')} />
+      <BackIcon onPress={() => navigation.navigate('UserProfile')} />
 
       <ScrollView style={styles.manageContainer}>
         <Text style={styles.manageTitle}>Account</Text>
         <View>
           <ForwardScreen
             title={'Change e-mail'}
-            onPress={() => navigation.replace('ChangeEmail')}
+            onPress={() => navigation.navigate('ChangeEmail')}
           />
           <ForwardScreen
             title={'Change password'}
-            onPress={() => navigation.replace('ChangePassword')}
+            onPress={() => navigation.navigate('ChangePassword')}
           />
           <ForwardScreen
             title={'Delete your account'}
-            onPress={() => navigation.replace('DeleteAccount')}
+            onPress={() => navigation.navigate('DeleteAccount')}
           />
         </View>
 

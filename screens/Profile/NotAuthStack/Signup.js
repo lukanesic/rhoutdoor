@@ -10,7 +10,7 @@ export default function Signup({ navigation }) {
   return (
     <>
       {/* GO BACK NADJI RESENJE */}
-      <BackIcon onPress={() => navigation.replace('Login')} />
+      <BackIcon onPress={() => navigation.navigate('Login')} />
 
       <ScrollView style={styles.signupContainer}>
         <Title color={'#000'} />

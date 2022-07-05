@@ -13,6 +13,7 @@ import React, { useState } from 'react'
 import { SimpleLineIcons, AntDesign } from '@expo/vector-icons'
 
 import { Fontisto } from '@expo/vector-icons'
+import CloseIcon from '../components/CloseIcon'
 
 const { height, width } = Dimensions.get('window')
 
@@ -21,9 +22,9 @@ export default function Cart() {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.close}>
-        <AntDesign name='close' size={24} color='black' />
-      </TouchableOpacity>
+      <CloseIcon
+        onPress={() => console.log('Function for closing the modal')}
+      />
 
       <View style={styles.tab}>
         <TouchableOpacity onPress={() => setActive(0)}>
@@ -311,11 +312,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-  },
-  close: {
-    position: 'absolute',
-    top: 50,
-    left: 25,
   },
   tab: {
     display: 'flex',

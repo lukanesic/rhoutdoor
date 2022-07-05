@@ -98,7 +98,7 @@ export default function Form({ navigation }) {
       >
         <Text style={styles.btnTxt}>Log in</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.replace('Recovery')}>
+      <TouchableOpacity onPress={() => navigation.navigate('Recovery')}>
         <Text style={styles.li}>Have you forgotten your password?</Text>
       </TouchableOpacity>
     </View>

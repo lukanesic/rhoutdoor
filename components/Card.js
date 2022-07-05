@@ -9,13 +9,15 @@ import React from 'react'
 
 const width = Dimensions.get('window').width / 2 - 25
 
-export default function Card({ item, color }) {
+export default function Card({ item, color, onPress }) {
   return (
-    <TouchableOpacity activeOpacity={0.7} style={styles.card}>
+    <TouchableOpacity activeOpacity={0.7} style={styles.card} onPress={onPress}>
       <View style={styles.image} />
       <View>
-        <Text style={styles.text}>Ottoman Lounge Chair</Text>
-        <Text style={styles.text}>$3.500</Text>
+        <Text style={[styles.text, color && { color: color }]}>
+          Ottoman Lounge Chair
+        </Text>
+        <Text style={[styles.text, color && { color: color }]}>$3.500</Text>
       </View>
     </TouchableOpacity>
   )
@@ -36,6 +38,5 @@ const styles = StyleSheet.create({
   },
   text: {
     marginTop: 5,
-    color: '#fff',
   },
 })
