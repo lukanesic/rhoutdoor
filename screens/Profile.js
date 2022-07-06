@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, ActivityIndicator } from 'react-native'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
@@ -16,9 +16,25 @@ import ChangePassword from './Profile/AuthStack/ChangePassword'
 import DeleteAccount from './Profile/AuthStack/DeleteAccount'
 import EditAddress from './Profile/AuthStack/EditAddress'
 
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
 const Stack = createStackNavigator()
 
 export default function Profile() {
+  const [isTryingToLogin, setIsTryingLogin] = useState(true)
+
+  useEffect(() => {
+    const fetchToken = async () => {
+      const storedToken = await AsyncStorage.getItem('token')
+
+      if (storedToken) {
+        setIsTryingLogin(false)
+      }
+    }
+
+    fetchToken()
+  }, [])
+
   return (
     <NavigationContainer independent={true}>
       <Stack.Navigator
@@ -27,9 +43,13 @@ export default function Profile() {
         }}
       >
         {/* NOT AUTH STACK */}
-        <Stack.Screen name='Login' component={Login} />
-        <Stack.Screen name='Recovery' component={Recovery} />
-        <Stack.Screen name='Signup' component={Signup} />
+        {isTryingToLogin && (
+          <>
+            <Stack.Screen name='Login' component={Login} />
+            <Stack.Screen name='Recovery' component={Recovery} />
+            <Stack.Screen name='Signup' component={Signup} />
+          </>
+        )}
 
         {/* Loading to AUTH STACK */}
         <Stack.Screen name='SignupSuccess' component={SignupSuccess} />

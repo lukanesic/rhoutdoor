@@ -90,6 +90,7 @@ const styles = StyleSheet.create({
     color: 'grey',
     fontSize: 14,
     marginTop: -5,
+    zIndex: -10,
   },
   animatedStyle: {
     top: 30,

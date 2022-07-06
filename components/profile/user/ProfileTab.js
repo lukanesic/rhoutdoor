@@ -7,16 +7,23 @@ import {
 } from 'react-native'
 import React from 'react'
 
-import { MaterialIcons } from '@expo/vector-icons'
 import ForwardScreen from '../../ForwardScreen'
+
+import { useSelector } from 'react-redux'
 
 const { width } = Dimensions.get('window')
 
 export default function ProfileTab({ navigation }) {
+  const { user } = useSelector((state) => state.user)
+
+  console.log(user)
+
   return (
     <View style={styles.container}>
-      <Text style={styles.name}>Customer Name</Text>
-      <Text style={styles.email}>customer@gmail.com</Text>
+      <Text style={styles.name}>
+        {user.name} {user.surname}
+      </Text>
+      <Text style={styles.email}>{user.email}</Text>
 
       <ForwardScreen
         title={'Account'}

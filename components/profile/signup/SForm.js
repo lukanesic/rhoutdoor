@@ -9,9 +9,16 @@ import {
 } from 'react-native'
 import React, { useState } from 'react'
 
+import { useDispatch } from 'react-redux'
+
 import { FloatingLabel } from '../../FloatingLabel'
 import ContinueBtn from '../../ContinueBtn'
 import ValidationMessage from '../../ValidationMessage'
+
+import { auth, db } from './../../../firebase'
+import { createUserWithEmailAndPassword } from '@firebase/auth'
+import { collection, setDoc, doc } from '@firebase/firestore'
+import { addUser } from '../../../store/userSlice'
 
 export default function SForm({ navigation }) {
   const [inputs, setInputs] = useState({
@@ -41,6 +48,8 @@ export default function SForm({ navigation }) {
     },
   })
 
+  const dispatch = useDispatch()
+
   const inputHandler = (identifier, val) => {
     setInputs((current) => {
       return {
@@ -50,7 +59,7 @@ export default function SForm({ navigation }) {
     })
   }
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     const email = inputs.email.value
     const password = inputs.password.value
     const repeatPassword = inputs.repeatPassword.value
@@ -87,14 +96,39 @@ export default function SForm({ navigation }) {
 
     // DISPATCH
     // DB
+    try {
+      const { user } = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      )
+
+      const userCollection = collection(db, 'users')
+      const setUser = await setDoc(doc(userCollection, user.email), {
+        email,
+        name,
+        surname,
+        id: user.uid,
+      })
+
+      dispatch(
+        addUser({
+          email,
+          name,
+          surname,
+          id: user.uid,
+        })
+      )
+    } catch (error) {
+      console.log(error)
+    }
+
+    navigation.navigate('SignupSuccess')
   }
 
   return (
     <>
-      <ContinueBtn
-        title={'Continue'}
-        onPress={() => navigation.navigate('SignupSuccess')}
-      />
+      <ContinueBtn title={'Continue'} onPress={onSubmit} />
       <Pressable onPress={Keyboard.dismiss}>
         <View style={styles.container}>
           <Text style={styles.title}>Personal Details</Text>
