@@ -17,11 +17,14 @@ import DeleteAccount from './Profile/AuthStack/DeleteAccount'
 import EditAddress from './Profile/AuthStack/EditAddress'
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useDispatch } from 'react-redux'
+import { getUserFromStorage } from '../store/userSlice'
 
 const Stack = createStackNavigator()
 
 export default function Profile() {
   const [isTryingToLogin, setIsTryingLogin] = useState(true)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     const fetchToken = async () => {
@@ -29,6 +32,7 @@ export default function Profile() {
 
       if (storedToken) {
         setIsTryingLogin(false)
+        dispatch(getUserFromStorage(JSON.parse(storedToken)))
       }
     }
 

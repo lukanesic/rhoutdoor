@@ -1,16 +1,17 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { db } from '../firebase'
-import { getDoc, doc } from '@firebase/firestore'
-// PRIVREMENI SLICE
-// OVO ZAMENJUJE LOCALSTORAGE ZA NATIVE UREDJAJE
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { doc, getDoc } from '@firebase/firestore'
 
-export const fetchUserData = createAsyncThunk(
-  'user/fetchUserData',
-  async (email) => {
+import { auth, db } from '../firebase'
+
+export const fetchUser = createAsyncThunk(
+  'userSlice/fetchUser',
+  async ({ email, token }) => {
     try {
-      const docRef = doc(db, 'users', email)
-      const data = await getDoc(docRef)
-      return data.data()
+      const userRef = doc(db, 'users', email)
+      const userSnap = await getDoc(userRef)
+
+      return { token: token, ...userSnap.data() }
     } catch (error) {
       console.log(error)
     }
@@ -27,26 +28,28 @@ export const userSlice = createSlice({
   name: 'userSlice',
   initialState,
   reducers: {
-    addUser: (state, { payload }) => {
+    getUserFromStorage: (state, { payload }) => {
       state.user = payload
+    },
+    removeUserFromStorage: (state) => {
+      state.user = {}
+      AsyncStorage.removeItem('token')
     },
   },
   extraReducers: {
-    [fetchUserData.pending]: (state) => {
+    [fetchUser.pending]: (state) => {
       state.loading = true
     },
-    [fetchUserData.fulfilled]: (state, { payload }) => {
-      state.user = payload
+    [fetchUser.fulfilled]: (state, { payload }) => {
       state.loading = false
-
-      localStorage.setItem('user', JSON.stringify(state.user))
+      AsyncStorage.setItem('token', JSON.stringify(payload))
     },
-    [fetchUserData.rejected]: (state, { payload }) => {
-      state.error = payload
+    [fetchUser.rejected]: (state) => {
       state.loading = false
+      state.error = true
     },
   },
 })
 
-export const { addUser } = userSlice.actions
+export const { getUserFromStorage, removeUserFromStorage } = userSlice.actions
 export default userSlice.reducer

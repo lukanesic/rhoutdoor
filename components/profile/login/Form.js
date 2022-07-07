@@ -10,24 +10,12 @@ import React, { useState } from 'react'
 import { FloatingLabel } from '../../FloatingLabel'
 
 import { AntDesign } from '@expo/vector-icons'
-
-import { signInWithEmailAndPassword } from '@firebase/auth'
 import { auth } from '../../../firebase'
-
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import { signInWithEmailAndPassword } from '@firebase/auth'
+import { useDispatch } from 'react-redux'
+import { fetchUser } from '../../../store/userSlice'
 
 export default function Form({ navigation }) {
-  // const [inputs, setInputs] = useState({
-  //   email: {
-  //     value: '',
-  //     isValid: true,
-  //   },
-  //   password: {
-  //     value: '',
-  //     isValid: true,
-  //   },
-  // })
-
   const [inputs, setInputs] = useState({
     email: {
       value: '',
@@ -38,8 +26,6 @@ export default function Form({ navigation }) {
       validation: { isValid: true, validationMessage: '' },
     },
   })
-
-  const [user, setUser] = useState()
 
   const inputHandler = (identifier, val) => {
     setInputs((current) => {
@@ -52,6 +38,8 @@ export default function Form({ navigation }) {
       }
     })
   }
+
+  const dispatch = useDispatch()
 
   const onSubmit = async () => {
     const email = inputs.email.value
@@ -82,20 +70,27 @@ export default function Form({ navigation }) {
       return
     }
 
-    // DISPATCH ??
-    // Da li je stvarno potreban redux za ovo ? Mislim da nije i da je to visak code-a.
-    // Svakako videcu da li moze token da se smesti samo i tjt jer cu odatle da vucem user-a, ne iz redux-a. Redux se takodje restartuje cim se app resetuje
-
-    // DATABASE
     try {
-      const response = await signInWithEmailAndPassword(auth, email, password)
-      // Za sad mi treba uid, ali tokenId ce biti glavna stvar od sada sa kojom radim.
-      // Ostavi console.log za dalje
-      // Kad je registracija u pitanju, onda moram da povucem uid ili email kako bi to bila info odakle cu da vucem user-e.
-      const token = response._tokenResponse.idToken
+      const { user } = await signInWithEmailAndPassword(auth, email, password)
+      // dispatch(fetchUser({ email: user.email, token: user.accessToken }))
+      // navigation.navigate('SignupSuccess')
 
-      AsyncStorage.setItem('token', token)
-      navigation.navigate('SignupSuccess')
+      console.log(user)
+
+      // setTimeout(() => {
+      //   setInputs(() => {
+      //     return {
+      //       email: {
+      //         value: '',
+      //         validation: { isValid: true, validationMessage: '' },
+      //       },
+      //       password: {
+      //         value: '',
+      //         validation: { isValid: true, validationMessage: '' },
+      //       },
+      //     }
+      //   })
+      // }, 2000)
     } catch (error) {
       console.log(error.code)
 

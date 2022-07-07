@@ -18,7 +18,6 @@ import ValidationMessage from '../../ValidationMessage'
 import { auth, db } from './../../../firebase'
 import { createUserWithEmailAndPassword } from '@firebase/auth'
 import { collection, setDoc, doc } from '@firebase/firestore'
-import { addUser } from '../../../store/userSlice'
 
 export default function SForm({ navigation }) {
   const [inputs, setInputs] = useState({
@@ -110,15 +109,6 @@ export default function SForm({ navigation }) {
         surname,
         id: user.uid,
       })
-
-      dispatch(
-        addUser({
-          email,
-          name,
-          surname,
-          id: user.uid,
-        })
-      )
     } catch (error) {
       console.log(error)
     }

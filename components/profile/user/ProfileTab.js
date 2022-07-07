@@ -8,15 +8,12 @@ import {
 import React from 'react'
 
 import ForwardScreen from '../../ForwardScreen'
-
 import { useSelector } from 'react-redux'
 
 const { width } = Dimensions.get('window')
 
 export default function ProfileTab({ navigation }) {
   const { user } = useSelector((state) => state.user)
-
-  console.log(user)
 
   return (
     <View style={styles.container}>

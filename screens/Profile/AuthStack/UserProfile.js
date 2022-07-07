@@ -17,15 +17,18 @@ import ProfileTab from '../../../components/profile/user/ProfileTab'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import Stores from '../../../components/profile/user/Stores'
 import Help from '../../../components/profile/login/Help'
+import ContinueBtn from '../../../components/ContinueBtn'
+
+import { useDispatch } from 'react-redux'
+import { removeUserFromStorage } from '../../../store/userSlice'
 
 const { width } = Dimensions.get('window')
 
 export default function UserProfile({ navigation }) {
-  // const [activeTab, setActiveTab] = useState('Purchases')
-
   const [activeIndex, setActiveIndex] = useState(0)
 
   const categories = ['Purchases', 'Profile', 'Settings']
+  const dispatch = useDispatch()
 
   const topRef = useRef()
   const bottomRef = useRef()
@@ -38,8 +41,14 @@ export default function UserProfile({ navigation }) {
     })
   }
 
+  const handleLogout = () => {
+    dispatch(removeUserFromStorage())
+    navigation.navigate('Profile')
+  }
+
   return (
     <>
+      <ContinueBtn title={'Logout'} onPress={handleLogout} />
       <View style={styles.recoveryContainer}>
         <Title color={'#000'} />
         <FlatList
