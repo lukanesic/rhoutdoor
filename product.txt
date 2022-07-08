@@ -1,0 +1,19 @@
+Svaki prozivod na Search i Cart mora da ima
+- Naslov
+- Cenu
+
+Kad se udje u svaki pojedinacni proizvod svaki mora da ima
+- Naslov
+- Cenu 
+- 4 slika
+- Mali opis 25 reci (lorem)
+- Add to bag btn, save for later btn.. Sve ostalo je suvisno i necu da se bavim time
+
+Sto znaci da svaki proizvod u bazi mora da ima
+- Naslov
+- Cenu
+- 4 slika
+- Opis 25 reci
+- category
+- subcategory
+- id

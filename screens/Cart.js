@@ -10,10 +10,10 @@ import {
 } from 'react-native'
 import React, { useState } from 'react'
 
-import { SimpleLineIcons, AntDesign } from '@expo/vector-icons'
-
 import { Fontisto } from '@expo/vector-icons'
 import CloseIcon from '../components/CloseIcon'
+
+import ShoppingBag from '../components/cart/ShoppingBag'
 
 const { height, width } = Dimensions.get('window')
 
@@ -42,84 +42,6 @@ export default function Cart() {
 
       {active === 0 && <ShoppingBag />}
       {active === 1 && <Wishlist />}
-    </View>
-  )
-}
-
-const ShoppingBag = () => {
-  const [isEmpty, setIsEmpty] = useState(false)
-
-  return (
-    // SHOPING BAG se deli na dva dela, dva state-a.
-    // Ako nesto postoji u Shopping bag, i ako ne postoji
-    // To zavisi od redux-a, ali sad cu samo da imitiram to ponasanje
-    <View style={styles.shoppingBagContainer}>
-      {isEmpty && <EmptyBag />}
-      {!isEmpty && <BagItems />}
-    </View>
-  )
-}
-
-const EmptyBag = () => {
-  return (
-    <View style={styles.emptyBagContainer}>
-      <SimpleLineIcons name='bag' size={24} color='black' />
-      <Text style={{ marginTop: 10, fontWeight: '200' }}>
-        Your shoping bag is empty
-      </Text>
-    </View>
-  )
-}
-
-const BagItems = () => {
-  const arr = [0, 1, 2, 3]
-
-  return (
-    <>
-      <View style={styles.bagItemsContainer}>
-        <FlatList
-          data={arr}
-          keyExtractor={(_, index) => index.toString()}
-          showsVerticalScrollIndicator={false}
-          renderItem={({ item }, index) => (
-            <BagProductCard item={item} key={index} />
-          )}
-        />
-
-        <TotalContinue />
-      </View>
-    </>
-  )
-}
-
-const BagProductCard = () => {
-  return (
-    <View style={styles.bagProductCardContainer}>
-      <Text style={styles.productTitle}>Product name</Text>
-      <View style={styles.productCard}>
-        <Image
-          style={{ width: 200, height: 300, backgroundColor: '#cecece' }}
-        />
-        <View style={styles.productCardDescription}>
-          <Text style={styles.productCartTxt}>Price</Text>
-          <View>
-            <TouchableOpacity onPress={() => console.log('Delete Function')}>
-              <Text style={styles.productCartTxt}>Delete</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() =>
-                console.log(
-                  'Save, transfer to Wishlist/Saved for later and remove from Shopping bag '
-                )
-              }
-            >
-              <Text style={[styles.productCartTxt, { marginTop: 20 }]}>
-                Save for later
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View>
     </View>
   )
 }
@@ -388,46 +310,7 @@ const styles = StyleSheet.create({
   },
 
   // SHOPPING BAG
-  shoppingBagContainer: {
-    flex: 1,
-    marginHorizontal: 25,
-  },
 
-  emptyBagContainer: {
-    flex: 1,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
-  bagItemsContainer: {
-    flex: 1,
-  },
-
-  bagProductCardContainer: {
-    marginVertical: 20,
-  },
-  productTitle: {
-    marginVertical: 10,
-    textTransform: 'uppercase',
-    fontSize: 11,
-    fontWeight: '600',
-  },
-  productCard: {
-    display: 'flex',
-    flexDirection: 'row',
-  },
-  productCardDescription: {
-    marginLeft: 10,
-    display: 'flex',
-    justifyContent: 'space-between',
-    paddingVertical: 5,
-  },
-  productCartTxt: {
-    fontWeight: '300',
-    textTransform: 'uppercase',
-    fontSize: 12,
-  },
   continueContainer: {
     backgroundColor: '#000',
     marginLeft: -25,

@@ -72,25 +72,7 @@ export default function Form({ navigation }) {
 
     try {
       const { user } = await signInWithEmailAndPassword(auth, email, password)
-      // dispatch(fetchUser({ email: user.email, token: user.accessToken }))
-      // navigation.navigate('SignupSuccess')
-
-      console.log(user)
-
-      // setTimeout(() => {
-      //   setInputs(() => {
-      //     return {
-      //       email: {
-      //         value: '',
-      //         validation: { isValid: true, validationMessage: '' },
-      //       },
-      //       password: {
-      //         value: '',
-      //         validation: { isValid: true, validationMessage: '' },
-      //       },
-      //     }
-      //   })
-      // }, 2000)
+      dispatch(fetchUser({ email: user.email, token: user.accessToken }))
     } catch (error) {
       console.log(error.code)
 
@@ -133,6 +115,20 @@ export default function Form({ navigation }) {
       //   }
       // })
     }
+
+    setInputs(() => {
+      return {
+        email: {
+          value: '',
+          validation: { isValid: true, validationMessage: '' },
+        },
+        password: {
+          value: '',
+          validation: { isValid: true, validationMessage: '' },
+        },
+      }
+    })
+    navigation.navigate('SignupSuccess')
   }
 
   return (

@@ -1,20 +1,18 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native'
-import React, { useState } from 'react'
+import React from 'react'
 
-const categories = ['Furniture', 'New', 'Sale']
+const categories = ['Furniture', 'Lighting', 'Fire&Heat']
 
-export default function Categories() {
-  const [active, setActive] = useState('Furniture')
-
+export default function Categories({ active, setActive }) {
   return (
     <View style={styles.container}>
-      {categories.map((cat, index) => (
+      {/* {categories.map((cat, index) => (
         <Pressable key={index} onPress={() => setActive(cat)}>
           <Text style={[styles.text, active === cat && styles.bold]}>
             {cat}
           </Text>
         </Pressable>
-      ))}
+      ))} */}
     </View>
   )
 }

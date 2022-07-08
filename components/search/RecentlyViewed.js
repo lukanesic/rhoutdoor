@@ -3,12 +3,19 @@ import React from 'react'
 
 import { useSelector, useDispatch } from 'react-redux'
 import { removeAllRecent } from '../../store/recentSlice'
+import { fetchProductsByCategory } from '../../store/productSlice'
 
 // Dolazi iz Redux-a koji cuva podatke koji dolaze iz inputa, tj ono sto smo pretrazili. Ovo dolazi naknadno.
 // Sastoji se iz istorije pretrazivanja, i dugmeta koji clear to.
-export default function RecentlyViewed() {
+export default function RecentlyViewed({ setSearch, setFiltered }) {
   const { recent } = useSelector((state) => state.recentViewed)
   const dispatch = useDispatch()
+
+  const searchHandler = (subcategory) => {
+    setSearch(subcategory)
+    setFiltered(subcategory)
+    dispatch(fetchProductsByCategory(subcategory.toLowerCase()))
+  }
 
   return (
     <>
@@ -16,9 +23,12 @@ export default function RecentlyViewed() {
         <View style={styles.container}>
           <Text style={styles.title}>RecentlyViewed</Text>
           <View>
-            {recent.map((item, index) => (
-              <TouchableOpacity key={index}>
-                <Text style={styles.text}>{item}</Text>
+            {recent.map((subcategory, index) => (
+              <TouchableOpacity
+                key={index}
+                onPress={() => searchHandler(subcategory)}
+              >
+                <Text style={styles.text}>{subcategory}</Text>
               </TouchableOpacity>
             ))}
           </View>

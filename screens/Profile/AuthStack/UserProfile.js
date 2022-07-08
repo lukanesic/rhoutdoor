@@ -43,7 +43,7 @@ export default function UserProfile({ navigation }) {
 
   const handleLogout = () => {
     dispatch(removeUserFromStorage())
-    navigation.navigate('Profile')
+    navigation.navigate('Login')
   }
 
   return (

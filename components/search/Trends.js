@@ -9,25 +9,30 @@ import React from 'react'
 
 import { useDispatch } from 'react-redux'
 import { addRecent } from '../../store/recentSlice'
+import { fetchProductsByCategory } from '../../store/productSlice'
 
-const suggestions = ['Lighting', 'Umbrela', 'Fire&Heat']
+const suggestions = ['Dining', 'Pendants', 'Heatsail®']
 
 export default function Trends({ search, setSearch, filtered, setFiltered }) {
   const dispatch = useDispatch()
 
-  const searchHandler = (item) => {
-    setSearch(item)
-    setFiltered(item)
-    dispatch(addRecent(item))
+  const searchHandler = (subcategory) => {
+    setSearch(subcategory)
+    setFiltered(subcategory)
+    dispatch(addRecent(subcategory))
+    dispatch(fetchProductsByCategory(subcategory.toLowerCase()))
   }
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Trends</Text>
       <View style={styles.links}>
-        {suggestions.map((item, index) => (
-          <TouchableOpacity key={index} onPress={() => searchHandler(item)}>
-            <Text style={styles.link}>{item}</Text>
+        {suggestions.map((subcategory, index) => (
+          <TouchableOpacity
+            key={index}
+            onPress={() => searchHandler(subcategory)}
+          >
+            <Text style={styles.link}>{subcategory}</Text>
           </TouchableOpacity>
         ))}
       </View>

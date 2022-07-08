@@ -8,6 +8,8 @@ import { Foundation, EvilIcons, Feather } from '@expo/vector-icons'
 
 import { Provider } from 'react-redux'
 import store from './store/store'
+import { getTotal } from './store/cartSlice'
+store.dispatch(getTotal())
 
 import Home from './screens/Home'
 import Search from './screens/Search'

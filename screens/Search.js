@@ -14,10 +14,12 @@ const Search = () => {
   const [useSearch, setUseSearch] = useState('')
   const [filtered, setFiltered] = useState('')
 
+  const [activeCategory, setActiveCategory] = useState('Furniture')
+
   return (
     <View style={styles.container}>
       <Title />
-      <Categories />
+      <Categories active={activeCategory} setActive={setActiveCategory} />
       <SearchBar
         search={useSearch}
         setSearch={setUseSearch}
@@ -34,12 +36,14 @@ const Search = () => {
             setFiltered={setFiltered}
             filtered={filtered}
           />
-          <RecentlyViewed />
+          <RecentlyViewed setSearch={setUseSearch} setFiltered={setFiltered} />
           {useSearch !== '' && (
             <SearchFilter
               search={useSearch}
               setSearch={setUseSearch}
               setFiltered={setFiltered}
+              activeCategory={activeCategory}
+              setActiveCategory={setActiveCategory}
             />
           )}
         </ScrollView>

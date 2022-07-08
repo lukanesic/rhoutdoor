@@ -18,7 +18,7 @@ import EditAddress from './Profile/AuthStack/EditAddress'
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useDispatch } from 'react-redux'
-import { getUserFromStorage } from '../store/userSlice'
+import { setUserFromStorage } from '../store/userSlice'
 
 const Stack = createStackNavigator()
 
@@ -32,7 +32,7 @@ export default function Profile() {
 
       if (storedToken) {
         setIsTryingLogin(false)
-        dispatch(getUserFromStorage(JSON.parse(storedToken)))
+        dispatch(setUserFromStorage(JSON.parse(storedToken)))
       }
     }
 

@@ -4,34 +4,56 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 
 import { useDispatch } from 'react-redux'
 import { addRecent } from '../../store/recentSlice'
+import { fetchProductsByCategory } from '../../store/productSlice'
 
-const dummy = [
-  'Garniture',
-  'Siting',
+const furnitureSub = ['Dining', 'Benches', 'Chairs', 'Swivel']
+
+const lightingSub = ['Pendants', 'Sconces', 'Flushmounts']
+
+const fire = ['Tables', 'Heatsail', 'Covers']
+
+const subCats = [
   'Dining',
+  'Benches',
+  'Chairs',
+  'Swivel',
+  'Pendants',
+  'Sconces',
+  'Flushmounts',
   'Tables',
-  'Shade Structures',
-  'Chaises',
-  'Shop by Room',
-  'Collections',
+  'Heatsail®',
+  'Covers',
 ]
 
-export default function SearchFilter({ search, setSearch, setFiltered }) {
+export default function SearchFilter({
+  search,
+  setSearch,
+  setFiltered,
+  activeCategory,
+  setActiveCategory,
+}) {
   const dispatch = useDispatch()
 
-  const searchHandler = (item) => {
-    setSearch(item)
-    dispatch(addRecent(item))
-    setFiltered(item)
+  const searchHandler = async (subcategory) => {
+    setSearch(subcategory)
+    dispatch(addRecent(subcategory))
+    setFiltered(subcategory)
+
+    dispatch(fetchProductsByCategory(subcategory.toLowerCase()))
   }
+
+  console.log(`${activeCategory} from SearchFilter`)
 
   return (
     <View style={styles.container}>
-      {dummy
+      {subCats
         .filter((item) => item.includes(search))
-        .map((res, index) => (
-          <TouchableOpacity key={index} onPress={() => searchHandler(res)}>
-            <Text style={styles.text}>{res}</Text>
+        .map((subcategory, index) => (
+          <TouchableOpacity
+            key={index}
+            onPress={() => searchHandler(subcategory)}
+          >
+            <Text style={styles.text}>{subcategory}</Text>
           </TouchableOpacity>
         ))}
     </View>

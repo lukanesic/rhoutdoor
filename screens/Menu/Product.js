@@ -9,18 +9,6 @@ import {
 } from 'react-native'
 import React, { useEffect, useRef } from 'react'
 import CloseIcon from '../../components/CloseIcon'
-import {
-  Gesture,
-  GestureDetector,
-  GestureHandlerRootView,
-} from 'react-native-gesture-handler'
-
-// import Animated, {
-//   useSharedValue,
-//   useAnimatedStyle,
-//   withTiming,
-//   withSpring,
-// } from 'react-native-reanimated'
 
 const images = ['0', '1', '2', '3']
 

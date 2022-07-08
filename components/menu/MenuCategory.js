@@ -1,21 +1,25 @@
 import { StyleSheet, Dimensions, ScrollView } from 'react-native'
 import React from 'react'
+import { useDispatch } from 'react-redux'
 
 import MenuList from './MenuList'
+import { fetchProductsByCategory } from '../../store/productSlice'
 
 const { width } = Dimensions.get('window')
 
 export default function MenuCategory({ index, navigation }) {
-  const furnitureCategories = [
-    'Dining Tables',
-    'Benches',
-    'Chairs',
-    'Swivel Chairs',
-  ]
+  const furnitureCategories = ['Dining', 'Benches', 'Chairs', 'Swivel Chairs']
 
   const lightingCategories = ['Pendants', 'Sconces', 'Flushmounts']
 
   const fireCategories = ['Fire Tables', 'Heatsail®', 'Covers']
+
+  const dispatch = useDispatch()
+
+  const handleFetch = (subcategory) => {
+    dispatch(fetchProductsByCategory(subcategory.toLowerCase()))
+    navigation.navigate('Products')
+  }
 
   return (
     <ScrollView style={styles.categoriesContainer}>
@@ -25,16 +29,26 @@ export default function MenuCategory({ index, navigation }) {
             key={index}
             item={item}
             index={index}
-            onPress={() => navigation.navigate('Products')}
+            onPress={() => handleFetch(item)}
           />
         ))}
       {index === 1 &&
         lightingCategories.map((item, index) => (
-          <MenuList key={index} item={item} index={index} />
+          <MenuList
+            key={index}
+            item={item}
+            index={index}
+            onPress={() => handleFetch(item)}
+          />
         ))}
       {index === 2 &&
         fireCategories.map((item, index) => (
-          <MenuList key={index} item={item} index={index} />
+          <MenuList
+            key={index}
+            item={item}
+            index={index}
+            onPress={() => handleFetch(item)}
+          />
         ))}
     </ScrollView>
   )

@@ -1,13 +1,18 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { TextInput } from 'react-native-gesture-handler'
+import { useDispatch } from 'react-redux'
 
 import { AntDesign } from '@expo/vector-icons'
+import { resetProducts } from '../../store/productSlice'
 
 export default function SearchBar({ search, setSearch, setFiltered }) {
+  const dispatch = useDispatch()
+
   const handleReset = () => {
     setSearch('')
     setFiltered('')
+    dispatch(resetProducts())
   }
 
   return (

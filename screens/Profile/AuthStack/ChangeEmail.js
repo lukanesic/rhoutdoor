@@ -7,12 +7,16 @@ import { FloatingLabel } from '../../../components/FloatingLabel'
 import ContinueBtn from '../../../components/ContinueBtn'
 import ValidationMessage from '../../../components/ValidationMessage'
 
+import { useSelector } from 'react-redux'
+
 export default function ChangeEmail({ navigation }) {
   const [inputs, setInputs] = useState({
     currentPassword: { value: '', isValid: true },
     newEmail: { value: '', isValid: true },
     repeatEmail: { value: '', isValid: true },
   })
+
+  const { user } = useSelector((state) => state.user)
 
   const inputHandler = (identifier, val) => {
     setInputs((current) => {
@@ -60,7 +64,7 @@ export default function ChangeEmail({ navigation }) {
         <Change
           title={'Change Email'}
           description={' Your current email address is'}
-          bold={'customer@gmail.com'}
+          bold={`${user.email}`}
         />
 
         {/* RESITI STATE ZA OVO */}

@@ -28,7 +28,7 @@ export const userSlice = createSlice({
   name: 'userSlice',
   initialState,
   reducers: {
-    getUserFromStorage: (state, { payload }) => {
+    setUserFromStorage: (state, { payload }) => {
       state.user = payload
     },
     removeUserFromStorage: (state) => {
@@ -43,6 +43,7 @@ export const userSlice = createSlice({
     [fetchUser.fulfilled]: (state, { payload }) => {
       state.loading = false
       AsyncStorage.setItem('token', JSON.stringify(payload))
+      state.user = payload
     },
     [fetchUser.rejected]: (state) => {
       state.loading = false
@@ -51,5 +52,5 @@ export const userSlice = createSlice({
   },
 })
 
-export const { getUserFromStorage, removeUserFromStorage } = userSlice.actions
+export const { setUserFromStorage, removeUserFromStorage } = userSlice.actions
 export default userSlice.reducer
