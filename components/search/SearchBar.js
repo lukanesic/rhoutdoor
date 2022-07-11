@@ -1,4 +1,10 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import {
+  Keyboard,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native'
 import React from 'react'
 import { TextInput } from 'react-native-gesture-handler'
 import { useDispatch } from 'react-redux'
@@ -23,6 +29,9 @@ export default function SearchBar({ search, setSearch, setFiltered }) {
         placeholderTextColor='#fff'
         onChangeText={(value) => setSearch(value)}
         value={search}
+        onKeyPress={({ nativeEvent }) => {
+          nativeEvent.key === 'Backspace' ? setFiltered('') : ''
+        }}
       />
       {search !== '' && (
         <TouchableOpacity onPress={handleReset} style={styles.icon}>

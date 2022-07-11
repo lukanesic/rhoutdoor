@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, Keyboard } from 'react-native'
 import React from 'react'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
@@ -40,6 +40,7 @@ export default function SearchFilter({
     setFiltered(subcategory)
 
     dispatch(fetchProductsByCategory(subcategory.toLowerCase()))
+    Keyboard.dismiss()
   }
 
   console.log(`${activeCategory} from SearchFilter`)

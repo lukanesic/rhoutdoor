@@ -42,6 +42,7 @@ export const userSlice = createSlice({
     },
     [fetchUser.fulfilled]: (state, { payload }) => {
       state.loading = false
+      console.log(payload)
       AsyncStorage.setItem('token', JSON.stringify(payload))
       state.user = payload
     },

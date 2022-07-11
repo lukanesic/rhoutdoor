@@ -11,6 +11,8 @@ import React from 'react'
 import { useDispatch } from 'react-redux'
 import { addToCart } from '../store/cartSlice'
 
+import { Fontisto } from '@expo/vector-icons'
+
 const width = Dimensions.get('window').width / 2 - 25
 
 export default function Card({ item, color, onPress }) {
@@ -18,29 +20,29 @@ export default function Card({ item, color, onPress }) {
   // onPress je dinamicno i zavisi odakle ga zovemo
   // ovde cu da ucinim onPress da uvek zove addtocart dok ne sredim Product page]
   const dispatch = useDispatch()
-
-  console.log(item)
-
   const handleCart = (product) => {
     dispatch(addToCart(product))
   }
 
   return (
-    <TouchableOpacity
-      activeOpacity={0.7}
-      style={styles.card}
-      onPress={() => handleCart(item)}
-    >
-      <Image style={styles.image} source={{ uri: item.images[1] }} />
-      <View>
-        <Text style={[styles.text, color && { color: color }]}>
-          {item.title}
-        </Text>
+    <View style={styles.card}>
+      <TouchableOpacity activeOpacity={0.7} onPress={() => handleCart(item)}>
+        <Image style={styles.image} source={{ uri: item.images[1] }} />
+      </TouchableOpacity>
+      <Text style={[styles.text, color && { color: color }]}>{item.title}</Text>
+      <View style={styles.bookandprice}>
         <Text style={[styles.text, color && { color: color }]}>
           ${item.price}
         </Text>
+        {/* Add to User List functionality */}
+        {/* <Fontisto
+          name='bookmark'
+          size={18}
+          color={'#fff'}
+          style={{ marginTop: 10, marginLeft: 2 }}
+        /> */}
       </View>
-    </TouchableOpacity>
+    </View>
   )
 }
 
@@ -58,5 +60,11 @@ const styles = StyleSheet.create({
   },
   text: {
     marginTop: 5,
+  },
+  bookandprice: {
+    display: 'flex',
+
+    alignItems: 'center',
+    flexDirection: 'row',
   },
 })

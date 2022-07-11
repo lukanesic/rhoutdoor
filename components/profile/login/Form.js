@@ -73,62 +73,48 @@ export default function Form({ navigation }) {
     try {
       const { user } = await signInWithEmailAndPassword(auth, email, password)
       dispatch(fetchUser({ email: user.email, token: user.accessToken }))
+      navigation.navigate('SignupSuccess')
+
+      setInputs(() => {
+        return {
+          email: {
+            value: '',
+            validation: { isValid: true, validationMessage: '' },
+          },
+          password: {
+            value: '',
+            validation: { isValid: true, validationMessage: '' },
+          },
+        }
+      })
     } catch (error) {
       console.log(error.code)
 
       const invalidEmail = error.code === 'auth/invalid-email'
-      const userNotExist = error.code === 'auth/user-not-found'
+      const userNotFound = error.code === 'auth/user-not-found'
       const wrongPass = error.code === 'auth/wrong-password'
 
-      setInputs((current) => {
-        return {
-          email: {
-            value: current.email.value,
-            validation: {
-              isValid: !invalidEmail,
-              validationMessage: 'Invalid email. Try again',
+      if (invalidEmail || wrongPass || userNotFound) {
+        setInputs((current) => {
+          return {
+            email: {
+              value: current.email.value,
+              validation: {
+                isValid: !invalidEmail && !userNotFound,
+                validationMessage: 'Invalid email. Try again',
+              },
             },
-          },
-          password: {
-            value: current.password.value,
-            validation: {
-              isValid: !wrongPass,
-              validationMessage: 'Wrong password. Try again',
+            password: {
+              value: current.password.value,
+              validation: {
+                isValid: !wrongPass,
+                validationMessage: 'Wrong password. Try again',
+              },
             },
-          },
-        }
-      })
-
-      // setInputs((current) => {
-      //   return {
-      //     email: {
-      //       value: current.email.value,
-      //       validation: { isValid: !email, validationMessage: error.code },
-      //     },
-      //     password: {
-      //       value: current.password.value,
-      //       validation: {
-      //         isValid: !password,
-      //         validationMessage: error.code,
-      //       },
-      //     },
-      //   }
-      // })
-    }
-
-    setInputs(() => {
-      return {
-        email: {
-          value: '',
-          validation: { isValid: true, validationMessage: '' },
-        },
-        password: {
-          value: '',
-          validation: { isValid: true, validationMessage: '' },
-        },
+          }
+        })
       }
-    })
-    navigation.navigate('SignupSuccess')
+    }
   }
 
   return (

@@ -8,11 +8,11 @@ import { fetchProductsByCategory } from '../../store/productSlice'
 const { width } = Dimensions.get('window')
 
 export default function MenuCategory({ index, navigation }) {
-  const furnitureCategories = ['Dining', 'Benches', 'Chairs', 'Swivel Chairs']
+  const furnitureCategories = ['Dining', 'Benches', 'Chairs', 'Swivel']
 
   const lightingCategories = ['Pendants', 'Sconces', 'Flushmounts']
 
-  const fireCategories = ['Fire Tables', 'Heatsail®', 'Covers']
+  const fireCategories = ['Tables', 'Heatsail®', 'Covers']
 
   const dispatch = useDispatch()
 

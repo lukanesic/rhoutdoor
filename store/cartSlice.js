@@ -1,9 +1,12 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const initialState = {
   cart: [],
-  cartTotalAmonut: 0,
+  cartTotalAmount: 0,
   cartTotalQuantity: 0,
+  savedForLater: [],
+  userList: [],
 }
 
 export const cartSlice = createSlice({
@@ -20,14 +23,39 @@ export const cartSlice = createSlice({
         state.cart.push(newItem)
       }
 
-      // ASYNCSTORAGE ADD
+      AsyncStorage.setItem('cartItem', JSON.stringify(state.cart))
     },
-    removeFromCart: (state) => {
+    addToCartFromStorage: (state, { payload }) => {
+      state.cart = payload
+    },
+    removeFromCart: (state, { payload }) => {
       const newCart = state.cart.filter((item) => item.id !== payload.id)
       state.cart = newCart
-
-      // REMOVE FROM ASYNCSTORAGE
+      AsyncStorage.setItem('cartItem', JSON.stringify(state.cart))
     },
+    addToSavedForLater: (state, { payload }) => {
+      state.savedForLater.push(payload)
+      AsyncStorage.setItem('saved', JSON.stringify(state.savedForLater))
+
+      state.cart = state.cart.filter((item) => item.id !== payload.id)
+      AsyncStorage.setItem('cartItem', JSON.stringify(state.cart))
+    },
+    addToSavedForLaterFromStorage: (state, { payload }) => {
+      state.savedForLater = payload
+    },
+    addToUserList: (state, { payload }) => {
+      console.log(payload)
+    },
+    addToBagFromWishlist: (state, { payload }) => {
+      state.cart.push(payload)
+      AsyncStorage.setItem('cartItem', JSON.stringify(state.cart))
+
+      state.savedForLater = state.savedForLater.filter(
+        (item) => item.id !== payload.id
+      )
+      AsyncStorage.setItem('saved', JSON.stringify(state.savedForLater))
+    },
+
     decreaseQty: (state, { payload }) => {
       const itemId = state.cart.findIndex((item) => item.id === payload.id)
 
@@ -59,13 +87,21 @@ export const cartSlice = createSlice({
         }
       )
 
-      state.cartTotalAmonut = total
+      state.cartTotalAmount = total
       state.cartTotalQuantity = quantity
     },
   },
   extraReducers: {},
 })
 
-export const { addToCart, removeFromCart, getTotal, decreaseQty } =
-  cartSlice.actions
+export const {
+  addToCart,
+  removeFromCart,
+  getTotal,
+  decreaseQty,
+  addToSavedForLaterFromStorage,
+  addToSavedForLater,
+  addToBagFromWishlist,
+  addToCartFromStorage,
+} = cartSlice.actions
 export default cartSlice.reducer

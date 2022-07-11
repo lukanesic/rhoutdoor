@@ -3,8 +3,23 @@ import React from 'react'
 import BackIcon from '../../../components/BackIcon'
 import Change from '../../../components/profile/user/Change'
 import Btn from '../../../components/profile/user/Btn'
+import { useDispatch, useSelector } from 'react-redux'
+
+import { db } from './../../../firebase'
+import { doc, deleteDoc } from 'firebase/firestore'
+import { removeUserFromStorage } from '../../../store/userSlice'
 
 export default function DeleteAccount({ navigation }) {
+  const { user } = useSelector((state) => state.user)
+  const dispatch = useDispatch()
+
+  const handleDelete = async (email) => {
+    const response = await deleteDoc(doc(db, 'users', email))
+    // I IZ ASYNC
+    navigation.navigate('Login')
+    dispatch(removeUserFromStorage())
+  }
+
   return (
     <>
       <BackIcon onPress={() => navigation.navigate('ManageAccount')} />
@@ -28,10 +43,7 @@ export default function DeleteAccount({ navigation }) {
           </Text>
         </View>
 
-        <Btn
-          title={'Continue'}
-          onPress={() => console.log('DELETE USER PROFILE FUNCTIONALITY')}
-        />
+        <Btn title={'Continue'} onPress={() => handleDelete(user.email)} />
       </View>
     </>
   )

@@ -7,21 +7,38 @@ import {
   Dimensions,
   Image,
 } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 
 import { SimpleLineIcons, AntDesign } from '@expo/vector-icons'
 import { useSelector, useDispatch } from 'react-redux'
-import { getTotal } from '../../store/cartSlice'
+import {
+  addToCartFromStorage,
+  addToSavedForLater,
+  getTotal,
+  removeFromCart,
+} from '../../store/cartSlice'
+
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const { height, width } = Dimensions.get('window')
 
 export default function ShoppingBag() {
-  const [isEmpty, setIsEmpty] = useState(false)
+  const dispatch = useDispatch()
 
-  const { cart, cartTotalAmount, cartTotalQuantity } = useSelector(
-    (state) => state.cart
-  )
-  console.log(cartTotalAmount)
+  useEffect(() => {
+    const fetchCartitem = async () => {
+      const storedCartitem = await AsyncStorage.getItem('cartItem')
+
+      if (storedCartitem) {
+        const cartItem = JSON.parse(storedCartitem)
+        dispatch(addToCartFromStorage(cartItem))
+      }
+    }
+
+    fetchCartitem()
+  }, [dispatch])
+
+  const { cart } = useSelector((state) => state.cart)
 
   return (
     // SHOPING BAG se deli na dva dela, dva state-a.
@@ -29,7 +46,7 @@ export default function ShoppingBag() {
     // To zavisi od redux-a, ali sad cu samo da imitiram to ponasanje
     <View style={styles.shoppingBagContainer}>
       {Object.keys(cart).length === 0 && <EmptyBag />}
-      {cart && <BagItems cart={cart} cartTotalAmount={cartTotalAmount} />}
+      {cart && <BagItems cart={cart} />}
     </View>
   )
 }
@@ -45,7 +62,7 @@ const EmptyBag = () => {
   )
 }
 
-const BagItems = ({ cart, cartTotalAmount }) => {
+const BagItems = ({ cart }) => {
   return (
     <>
       <View style={styles.bagItemsContainer}>
@@ -58,16 +75,15 @@ const BagItems = ({ cart, cartTotalAmount }) => {
           )}
         />
 
-        {Object.keys(cart).length !== 0 && (
-          <TotalContinue cartTotalAmount={cartTotalAmount} cart={cart} />
-        )}
+        {Object.keys(cart).length !== 0 && <TotalContinue cart={cart} />}
       </View>
     </>
   )
 }
 
 const BagProductCard = ({ item }) => {
-  console.log(item)
+  const dispatch = useDispatch()
+
   return (
     <View style={styles.bagProductCardContainer}>
       <Text style={styles.productTitle}>{item.title}</Text>
@@ -77,17 +93,18 @@ const BagProductCard = ({ item }) => {
           source={{ uri: item.images[1] }}
         />
         <View style={styles.productCardDescription}>
-          <Text style={styles.productCartTxt}>${item.price}</Text>
           <View>
-            <TouchableOpacity onPress={() => console.log('Delete Function')}>
+            <Text style={[styles.productCartTxt, { marginBottom: 20 }]}>
+              ${item.price}
+            </Text>
+            <Text style={styles.productCartTxt}>Quantiy X{item.qty}</Text>
+          </View>
+          <View>
+            <TouchableOpacity onPress={() => dispatch(removeFromCart(item))}>
               <Text style={styles.productCartTxt}>Delete</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() =>
-                console.log(
-                  'Save, transfer to Wishlist/Saved for later and remove from Shopping bag '
-                )
-              }
+              onPress={() => dispatch(addToSavedForLater(item))}
             >
               <Text style={[styles.productCartTxt, { marginTop: 20 }]}>
                 Save for later
@@ -100,11 +117,13 @@ const BagProductCard = ({ item }) => {
   )
 }
 
-const TotalContinue = ({ cartTotalAmount, cart }) => {
+const TotalContinue = ({ cart }) => {
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(getTotal())
   }, [dispatch, cart])
+
+  const { cartTotalAmount } = useSelector((state) => state.cart)
 
   return (
     <View style={styles.continueContainer}>

@@ -7,9 +7,10 @@ import Title from './../../components/Title'
 import CardList from '../../components/CardList'
 import { useSelector, useDispatch } from 'react-redux'
 import { resetProducts } from '../../store/productSlice'
+import Loading from '../../components/Loading'
 
 export default function Products({ navigation }) {
-  const { products } = useSelector((state) => state.products)
+  const { products, loading } = useSelector((state) => state.products)
   const dispatch = useDispatch()
 
   const handleBackBtn = () => {
@@ -26,13 +27,17 @@ export default function Products({ navigation }) {
 
       <Title color={'#a2a2a2'} />
 
-      <CardList
-        data={products}
-        color={'#282828'}
-        background={'#fff'}
-        marginTop={220}
-        onPress={() => navigation.navigate('Product')}
-      />
+      {loading && <Loading color={'black'} bg={'#fff'} marginTop={75} />}
+
+      {!loading && (
+        <CardList
+          data={products}
+          color={'#282828'}
+          background={'#fff'}
+          marginTop={220}
+          onPress={() => navigation.navigate('Product')}
+        />
+      )}
     </View>
   )
 }

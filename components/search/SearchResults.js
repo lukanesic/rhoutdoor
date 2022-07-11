@@ -3,9 +3,10 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 
 import CardList from '../CardList'
+import Loading from '../Loading'
 
 export default function SearchResults() {
-  const { products } = useSelector((state) => state.products)
+  const { products, loading } = useSelector((state) => state.products)
 
   return (
     <>
@@ -20,12 +21,16 @@ export default function SearchResults() {
         {products.length} Results
       </Text>
 
-      <CardList
-        data={products}
-        color={'#fff'}
-        background={'#000'}
-        marginTop={20}
-      />
+      {/* {loading && <Loading color={'white'} bg={'#000'} marginTop={-75} />} */}
+
+      {!loading && (
+        <CardList
+          data={products}
+          color={'#fff'}
+          background={'#000'}
+          marginTop={20}
+        />
+      )}
     </>
   )
 }
