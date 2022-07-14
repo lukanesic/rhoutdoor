@@ -8,25 +8,15 @@ import {
 } from 'react-native'
 import React from 'react'
 
-import { useDispatch } from 'react-redux'
-import { addToCart } from '../store/cartSlice'
-
-import { Fontisto } from '@expo/vector-icons'
-
 const width = Dimensions.get('window').width / 2 - 25
 
-export default function Card({ item, color, onPress }) {
-  // Ovde je cart funkcionalnost koja ce da bude umesto onPress koji dolazi
-  // onPress je dinamicno i zavisi odakle ga zovemo
-  // ovde cu da ucinim onPress da uvek zove addtocart dok ne sredim Product page]
-  const dispatch = useDispatch()
-  const handleCart = (product) => {
-    dispatch(addToCart(product))
-  }
-
+export default function Card({ item, color, navigation }) {
   return (
     <View style={styles.card}>
-      <TouchableOpacity activeOpacity={0.7} onPress={() => handleCart(item)}>
+      <TouchableOpacity
+        activeOpacity={0.7}
+        onPress={() => navigation.navigate('Product', item)}
+      >
         <Image style={styles.image} source={{ uri: item.images[1] }} />
       </TouchableOpacity>
       <Text style={[styles.text, color && { color: color }]}>{item.title}</Text>

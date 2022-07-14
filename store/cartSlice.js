@@ -7,6 +7,7 @@ const initialState = {
   cartTotalQuantity: 0,
   savedForLater: [],
   userList: [],
+  loading: false,
 }
 
 export const cartSlice = createSlice({
@@ -25,8 +26,12 @@ export const cartSlice = createSlice({
 
       AsyncStorage.setItem('cartItem', JSON.stringify(state.cart))
     },
-    addToCartFromStorage: (state, { payload }) => {
+    addToCartFromStorageRequest: (state) => {
+      state.loading = true
+    },
+    addToCartFromStorageSuccess: (state, { payload }) => {
       state.cart = payload
+      state.loading = false
     },
     removeFromCart: (state, { payload }) => {
       const newCart = state.cart.filter((item) => item.id !== payload.id)
@@ -102,6 +107,7 @@ export const {
   addToSavedForLaterFromStorage,
   addToSavedForLater,
   addToBagFromWishlist,
-  addToCartFromStorage,
+  addToCartFromStorageSuccess,
+  addToCartFromStorageRequest,
 } = cartSlice.actions
 export default cartSlice.reducer

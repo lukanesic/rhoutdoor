@@ -9,7 +9,7 @@ export default function Login({ navigation }) {
   return (
     <ScrollView style={styles.loginContainer}>
       <Title />
-      <Form navigation={navigation} />
+      <Form navigation={navigation} navigateLocation={'SignupSuccess'} />
       <Help navigation={navigation} />
     </ScrollView>
   )

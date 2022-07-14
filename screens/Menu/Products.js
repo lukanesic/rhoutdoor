@@ -35,7 +35,7 @@ export default function Products({ navigation }) {
           color={'#282828'}
           background={'#fff'}
           marginTop={220}
-          onPress={() => navigation.navigate('Product')}
+          navigation={navigation}
         />
       )}
     </View>

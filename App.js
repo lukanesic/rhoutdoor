@@ -1,5 +1,8 @@
 import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, Text, View } from 'react-native'
+import { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
@@ -118,18 +121,18 @@ const Tabs = () => {
   )
 }
 
-const Product = () => {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen name='Products' component={Products} />
-    </Stack.Navigator>
-  )
-}
+// const Product = () => {
+//   return (
+//     <Stack.Navigator>
+//       <Stack.Screen name='Products' component={Products} />
+//     </Stack.Navigator>
+//   )
+// }
 
-const Products = () => {
-  return (
-    <View>
-      <Text>Products</Text>
-    </View>
-  )
-}
+// const Products = () => {
+//   return (
+//     <View>
+//       <Text>Products</Text>
+//     </View>
+//   )
+// }

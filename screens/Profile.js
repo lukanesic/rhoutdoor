@@ -17,13 +17,12 @@ import DeleteAccount from './Profile/AuthStack/DeleteAccount'
 import EditAddress from './Profile/AuthStack/EditAddress'
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setUserFromStorage } from '../store/userSlice'
 
 const Stack = createStackNavigator()
 
 export default function Profile() {
-  const [isTryingToLogin, setIsTryingLogin] = useState(true)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -31,13 +30,14 @@ export default function Profile() {
       const storedToken = await AsyncStorage.getItem('token')
 
       if (storedToken) {
-        setIsTryingLogin(false)
         dispatch(setUserFromStorage(JSON.parse(storedToken)))
       }
     }
 
     fetchToken()
   }, [])
+
+  const { user } = useSelector((state) => state.user)
 
   return (
     <NavigationContainer independent={true}>
@@ -47,7 +47,7 @@ export default function Profile() {
         }}
       >
         {/* NOT AUTH STACK */}
-        {isTryingToLogin && (
+        {Object.keys(user).length === 0 && (
           <>
             <Stack.Screen name='Login' component={Login} />
             <Stack.Screen name='Recovery' component={Recovery} />
@@ -55,18 +55,23 @@ export default function Profile() {
           </>
         )}
 
+        {Object.keys(user).length !== 0 && (
+          <>
+            <Stack.Screen name='SignupSuccess' component={SignupSuccess} />
+
+            <Stack.Screen name='UserProfile' component={UserProfile} />
+            <Stack.Screen name='ManageAccount' component={ManageAccount} />
+            <Stack.Screen name='ManageAddress' component={ManageAddresses} />
+
+            <Stack.Screen name='ChangeEmail' component={ChangeEmail} />
+            <Stack.Screen name='ChangePassword' component={ChangePassword} />
+            <Stack.Screen name='DeleteAccount' component={DeleteAccount} />
+
+            <Stack.Screen name='EditAddress' component={EditAddress} />
+          </>
+        )}
+
         {/* Loading to AUTH STACK */}
-        <Stack.Screen name='SignupSuccess' component={SignupSuccess} />
-
-        <Stack.Screen name='UserProfile' component={UserProfile} />
-        <Stack.Screen name='ManageAccount' component={ManageAccount} />
-        <Stack.Screen name='ManageAddress' component={ManageAddresses} />
-
-        <Stack.Screen name='ChangeEmail' component={ChangeEmail} />
-        <Stack.Screen name='ChangePassword' component={ChangePassword} />
-        <Stack.Screen name='DeleteAccount' component={DeleteAccount} />
-
-        <Stack.Screen name='EditAddress' component={EditAddress} />
       </Stack.Navigator>
     </NavigationContainer>
   )

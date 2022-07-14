@@ -12,41 +12,45 @@ import React, { useEffect } from 'react'
 import { SimpleLineIcons, AntDesign } from '@expo/vector-icons'
 import { useSelector, useDispatch } from 'react-redux'
 import {
-  addToCartFromStorage,
+  addToCartFromStorageSuccess,
+  addToCartFromStorageRequest,
   addToSavedForLater,
   getTotal,
   removeFromCart,
 } from '../../store/cartSlice'
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import Loading from '../Loading'
 
 const { height, width } = Dimensions.get('window')
 
-export default function ShoppingBag() {
+export default function ShoppingBag({ navigation }) {
   const dispatch = useDispatch()
 
   useEffect(() => {
     const fetchCartitem = async () => {
+      dispatch(addToCartFromStorageRequest())
       const storedCartitem = await AsyncStorage.getItem('cartItem')
 
       if (storedCartitem) {
         const cartItem = JSON.parse(storedCartitem)
-        dispatch(addToCartFromStorage(cartItem))
+        dispatch(addToCartFromStorageSuccess(cartItem))
       }
     }
 
     fetchCartitem()
   }, [dispatch])
 
-  const { cart } = useSelector((state) => state.cart)
+  const { cart, loading } = useSelector((state) => state.cart)
+
+  if (loading) {
+    return <Loading bg={'#fff'} color={'#000'} marginTop={0} />
+  }
 
   return (
-    // SHOPING BAG se deli na dva dela, dva state-a.
-    // Ako nesto postoji u Shopping bag, i ako ne postoji
-    // To zavisi od redux-a, ali sad cu samo da imitiram to ponasanje
     <View style={styles.shoppingBagContainer}>
       {Object.keys(cart).length === 0 && <EmptyBag />}
-      {cart && <BagItems cart={cart} />}
+      {cart && <BagItems cart={cart} navigation={navigation} />}
     </View>
   )
 }
@@ -62,7 +66,7 @@ const EmptyBag = () => {
   )
 }
 
-const BagItems = ({ cart }) => {
+const BagItems = ({ cart, navigation }) => {
   return (
     <>
       <View style={styles.bagItemsContainer}>
@@ -75,7 +79,9 @@ const BagItems = ({ cart }) => {
           )}
         />
 
-        {Object.keys(cart).length !== 0 && <TotalContinue cart={cart} />}
+        {Object.keys(cart).length !== 0 && (
+          <TotalContinue cart={cart} navigation={navigation} />
+        )}
       </View>
     </>
   )
@@ -117,13 +123,14 @@ const BagProductCard = ({ item }) => {
   )
 }
 
-const TotalContinue = ({ cart }) => {
+const TotalContinue = ({ cart, navigation }) => {
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(getTotal())
   }, [dispatch, cart])
 
   const { cartTotalAmount } = useSelector((state) => state.cart)
+  const { user } = useSelector((state) => state.user)
 
   return (
     <View style={styles.continueContainer}>
@@ -137,7 +144,9 @@ const TotalContinue = ({ cart }) => {
           backgroundColor: '#fff',
         }}
         onPress={() =>
-          console.log('Navigate to checkout or address. Kao i kod njih')
+          navigation.navigate(
+            `${Object.keys(user).length === 0 ? 'CartLogin' : 'Summary'}`
+          )
         }
       >
         <Text

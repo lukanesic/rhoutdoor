@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 import CardList from '../CardList'
 import Loading from '../Loading'
 
-export default function SearchResults() {
+export default function SearchResults({ navigation }) {
   const { products, loading } = useSelector((state) => state.products)
 
   return (
@@ -21,7 +21,7 @@ export default function SearchResults() {
         {products.length} Results
       </Text>
 
-      {/* {loading && <Loading color={'white'} bg={'#000'} marginTop={-75} />} */}
+      {loading && <Loading color={'white'} bg={'#000'} marginTop={-75} />}
 
       {!loading && (
         <CardList
@@ -29,6 +29,7 @@ export default function SearchResults() {
           color={'#fff'}
           background={'#000'}
           marginTop={20}
+          navigation={navigation}
         />
       )}
     </>

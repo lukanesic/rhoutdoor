@@ -8,7 +8,7 @@ export default function CardList({
   background,
   color,
   marginTop,
-  onPress,
+  navigation,
 }) {
   return (
     <FlatList
@@ -18,7 +18,7 @@ export default function CardList({
       columnWrapperStyle={{ justifyContent: 'space-between' }}
       showsVerticalScrollIndicator={false}
       renderItem={({ item }, index) => (
-        <Card item={item} key={index} color={color} onPress={onPress} />
+        <Card item={item} key={index} color={color} navigation={navigation} />
       )}
       style={{
         backgroundColor: background,

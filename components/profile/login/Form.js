@@ -15,7 +15,7 @@ import { signInWithEmailAndPassword } from '@firebase/auth'
 import { useDispatch } from 'react-redux'
 import { fetchUser } from '../../../store/userSlice'
 
-export default function Form({ navigation }) {
+export default function Form({ navigation, unset, navigateLocation }) {
   const [inputs, setInputs] = useState({
     email: {
       value: '',
@@ -73,7 +73,7 @@ export default function Form({ navigation }) {
     try {
       const { user } = await signInWithEmailAndPassword(auth, email, password)
       dispatch(fetchUser({ email: user.email, token: user.accessToken }))
-      navigation.navigate('SignupSuccess')
+      navigation.navigate(`${navigateLocation}`)
 
       setInputs(() => {
         return {
@@ -164,9 +164,11 @@ export default function Form({ navigation }) {
       >
         <Text style={styles.btnTxt}>Log in</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate('Recovery')}>
-        <Text style={styles.li}>Have you forgotten your password?</Text>
-      </TouchableOpacity>
+      {!unset && (
+        <TouchableOpacity onPress={() => navigation.navigate('Recovery')}>
+          <Text style={styles.li}>Have you forgotten your password?</Text>
+        </TouchableOpacity>
+      )}
     </View>
   )
 }

@@ -10,7 +10,7 @@ import RecentlyViewed from '../components/search/RecentlyViewed'
 import SearchFilter from '../components/search/SearchFilter'
 import SearchResults from '../components/search/SearchResults'
 
-const Search = () => {
+const Search = ({ navigation }) => {
   const [useSearch, setUseSearch] = useState('')
   const [filtered, setFiltered] = useState('')
 
@@ -26,7 +26,7 @@ const Search = () => {
         setFiltered={setFiltered}
       />
 
-      {filtered !== '' && <SearchResults />}
+      {filtered !== '' && <SearchResults navigation={navigation} />}
 
       {filtered === '' && (
         <ScrollView showsVerticalScrollIndicator={false}>

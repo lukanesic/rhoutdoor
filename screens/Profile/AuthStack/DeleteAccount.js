@@ -5,9 +5,10 @@ import Change from '../../../components/profile/user/Change'
 import Btn from '../../../components/profile/user/Btn'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { db } from './../../../firebase'
+import { auth, db } from './../../../firebase'
 import { doc, deleteDoc } from 'firebase/firestore'
 import { removeUserFromStorage } from '../../../store/userSlice'
+import { deleteUser } from '@firebase/auth'
 
 export default function DeleteAccount({ navigation }) {
   const { user } = useSelector((state) => state.user)
@@ -15,9 +16,14 @@ export default function DeleteAccount({ navigation }) {
 
   const handleDelete = async (email) => {
     const response = await deleteDoc(doc(db, 'users', email))
-    // I IZ ASYNC
     navigation.navigate('Login')
     dispatch(removeUserFromStorage())
+
+    try {
+      await deleteUser(auth.currentUser)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
