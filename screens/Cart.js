@@ -3,6 +3,7 @@ import React from 'react'
 
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
+import { useSelector } from 'react-redux'
 
 const Stack = createStackNavigator()
 
@@ -13,6 +14,7 @@ import Summary from './Cart/Summary'
 const { height, width } = Dimensions.get('window')
 
 export default function Cart() {
+  const { user } = useSelector((state) => state.user)
   return (
     <NavigationContainer independent={true}>
       <Stack.Navigator
@@ -21,15 +23,19 @@ export default function Cart() {
         }}
       >
         <Stack.Screen name='CartScreen' component={CartScreen} />
-        <Stack.Screen name='Summary' component={Summary} />
 
-        <Stack.Screen
-          name='CartLogin'
-          component={CartLogin}
-          options={{
-            presentation: 'modal',
-          }}
-        />
+        {Object.keys(user).length === 0 && (
+          <Stack.Screen
+            name='CartLogin'
+            component={CartLogin}
+            options={{
+              presentation: 'modal',
+            }}
+          />
+        )}
+        {Object.keys(user).length !== 0 && (
+          <Stack.Screen name='Summary' component={Summary} />
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   )

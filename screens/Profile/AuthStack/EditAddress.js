@@ -6,7 +6,7 @@ import { FloatingLabel } from '../../../components/FloatingLabel'
 import ContinueBtn from '../../../components/ContinueBtn'
 import ValidationMessage from '../../../components/ValidationMessage'
 
-export default function EditAddress({ navigation }) {
+export default function EditAddress({ navigation, navigationLocation }) {
   const [inputs, setInputs] = useState({
     name: { value: '', isValid: true },
     surname: { value: '', isValid: true },
@@ -74,7 +74,8 @@ export default function EditAddress({ navigation }) {
 
   return (
     <>
-      <BackIcon onPress={() => navigation.navigate('ManageAddress')} />
+      {/* <BackIcon onPress={() => navigation.navigate('ManageAddress')} /> */}
+      <BackIcon onPress={() => navigation.navigate(`${navigationLocation}`)} />
       <ContinueBtn title={'Save'} onPress={onSubmit} />
       <ScrollView style={styles.container}>
         <Change title={'edit address'} />
