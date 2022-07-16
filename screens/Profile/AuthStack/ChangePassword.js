@@ -11,7 +11,8 @@ import { auth } from '../../../firebase'
 import { signInWithEmailAndPassword, updatePassword } from '@firebase/auth'
 
 import { AntDesign } from '@expo/vector-icons'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { removeUserFromStorage } from '../../../store/userSlice'
 
 export default function ChangePassword({ navigation }) {
   const { user } = useSelector((state) => state.user)
@@ -41,6 +42,8 @@ export default function ChangePassword({ navigation }) {
       }
     })
   }
+
+  const dispatch = useDispatch()
 
   const onSubmit = async () => {
     const oldPassword = inputs.oldPassword.value
@@ -81,7 +84,8 @@ export default function ChangePassword({ navigation }) {
       )
       await updatePassword(auth.currentUser, newPassword)
       setTimeout(() => {
-        navigation.navigate('ManageAccount')
+        dispatch(removeUserFromStorage())
+        navigation.navigate('Login')
       }, 1000)
     } catch (error) {
       console.log(error.code)

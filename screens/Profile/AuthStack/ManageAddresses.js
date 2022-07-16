@@ -22,6 +22,18 @@ export default function ManageAddresses({ navigation }) {
       <ScrollView style={styles.manageContainer}>
         <Text style={styles.manageTitle}>Address</Text>
 
+        {!Object.keys(user).includes('address') && (
+          <View>
+            <Text>You dont have any address</Text>
+            <TouchableOpacity
+              style={styles.btnContainer}
+              onPress={() => navigation.navigate('EditAddress')}
+            >
+              <Text style={styles.btnTxt}>Add another Address</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+
         {/* Map ako ima vise naravno */}
         {Object.keys(user).includes('address') && (
           <Address

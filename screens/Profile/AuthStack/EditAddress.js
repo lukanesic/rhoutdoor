@@ -21,8 +21,6 @@ export default function EditAddress({
   const { user } = useSelector((state) => state.user)
   const dispatch = useDispatch()
 
-  console.log(user)
-
   const [inputs, setInputs] = useState({
     address: { value: '', isValid: true },
     city: { value: '', isValid: true },
@@ -84,7 +82,8 @@ export default function EditAddress({
         })
       )
 
-      const userRef = doc(db, 'users', user.email)
+      const userRef = doc(db, 'users', user.id)
+
       const userSnap = await updateDoc(userRef, {
         address: address,
         city: city,

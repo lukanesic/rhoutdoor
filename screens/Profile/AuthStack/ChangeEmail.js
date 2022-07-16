@@ -14,7 +14,8 @@ import { updateEmail, signInWithEmailAndPassword } from '@firebase/auth'
 import { doc, updateDoc } from 'firebase/firestore'
 import { db } from '../../../firebase'
 
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { removeUserFromStorage } from '../../../store/userSlice'
 
 export default function ChangeEmail({ navigation }) {
   const [inputs, setInputs] = useState({
@@ -33,6 +34,7 @@ export default function ChangeEmail({ navigation }) {
   })
 
   const { user } = useSelector((state) => state.user)
+  const dispatch = useDispatch()
 
   const inputHandler = (identifier, val) => {
     setInputs((current) => {
@@ -96,11 +98,11 @@ export default function ChangeEmail({ navigation }) {
         email: newE,
       })
 
-      // console.log(updateUser)
-
       setTimeout(() => {
-        navigation.navigate('ManageAccount')
+        dispatch(removeUserFromStorage())
+        navigation.navigate('Login')
       }, 1000)
+
       //  VRATI IMPUTE NA NULU
       setInputs(() => {
         return {
