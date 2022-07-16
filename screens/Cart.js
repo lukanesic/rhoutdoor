@@ -1,19 +1,35 @@
 import { StyleSheet, Dimensions } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 const Stack = createStackNavigator()
 
 import CartScreen from './Cart/CartScreen'
 import CartLogin from './Cart/CartLogin'
 import Summary from './Cart/Summary'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { setUserFromStorage } from '../store/userSlice'
 
 const { height, width } = Dimensions.get('window')
 
 export default function Cart() {
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    const fetchToken = async () => {
+      const storedToken = await AsyncStorage.getItem('token')
+
+      if (storedToken) {
+        dispatch(setUserFromStorage(JSON.parse(storedToken)))
+      }
+    }
+
+    fetchToken()
+  }, [])
+
   const { user } = useSelector((state) => state.user)
   return (
     <NavigationContainer independent={true}>

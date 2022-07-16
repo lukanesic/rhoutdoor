@@ -72,7 +72,7 @@ export default function Form({ navigation, unset, navigateLocation }) {
 
     try {
       const { user } = await signInWithEmailAndPassword(auth, email, password)
-      dispatch(fetchUser({ email: user.email, token: user.accessToken }))
+      dispatch(fetchUser({ id: user.uid, token: user.accessToken }))
       navigation.navigate(`${navigateLocation}`)
 
       setInputs(() => {

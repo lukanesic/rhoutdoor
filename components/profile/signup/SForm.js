@@ -104,14 +104,14 @@ export default function SForm({ navigation }) {
       )
 
       const userCollection = collection(db, 'users')
-      const setUser = await setDoc(doc(userCollection, user.email), {
+      const setUser = await setDoc(doc(userCollection, user.uid), {
         email,
         name,
         surname,
         id: user.uid,
       })
 
-      dispatch(fetchUser({ email: user.email, token: user.accessToken }))
+      dispatch(fetchUser({ id: user.uid, token: user.accessToken }))
     } catch (error) {
       console.log(error)
     }

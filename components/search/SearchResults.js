@@ -30,6 +30,7 @@ export default function SearchResults({ navigation }) {
           background={'#000'}
           marginTop={20}
           navigation={navigation}
+          navigationLocation={''}
         />
       )}
     </>

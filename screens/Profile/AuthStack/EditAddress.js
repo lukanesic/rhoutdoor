@@ -6,10 +6,24 @@ import { FloatingLabel } from '../../../components/FloatingLabel'
 import ContinueBtn from '../../../components/ContinueBtn'
 import ValidationMessage from '../../../components/ValidationMessage'
 
-export default function EditAddress({ navigation, navigationLocation }) {
+import { useSelector, useDispatch } from 'react-redux'
+import { setUserFromStorage } from '../../../store/userSlice'
+
+import { db } from '../../../firebase'
+import { collection, doc, updateDoc } from '@firebase/firestore'
+
+export default function EditAddress({
+  navigation,
+  navigationLocation,
+  unsetSave,
+  setContinue,
+}) {
+  const { user } = useSelector((state) => state.user)
+  const dispatch = useDispatch()
+
+  console.log(user)
+
   const [inputs, setInputs] = useState({
-    name: { value: '', isValid: true },
-    surname: { value: '', isValid: true },
     address: { value: '', isValid: true },
     city: { value: '', isValid: true },
     country: { value: '', isValid: true },
@@ -26,17 +40,13 @@ export default function EditAddress({ navigation, navigationLocation }) {
     })
   }
 
-  const onSubmit = () => {
-    const name = inputs.name.value
-    const surname = inputs.surname.value
+  const onSubmit = async (navLoc) => {
     const address = inputs.address.value
     const city = inputs.city.value
     const country = inputs.country.value
     const postal = inputs.postal.value
     const phone = inputs.phone.value
 
-    const nameIsValid = name.length > 0
-    const surnameIsValid = surname.length > 0
     const addressIsValid = address.length > 0
     const cityIsValid = city.length > 0
     const countryIsValid = country.length > 0
@@ -44,8 +54,6 @@ export default function EditAddress({ navigation, navigationLocation }) {
     const phoneIsValid = phone.length > 0
 
     if (
-      !nameIsValid ||
-      !surnameIsValid ||
       !addressIsValid ||
       !cityIsValid ||
       !countryIsValid ||
@@ -54,8 +62,6 @@ export default function EditAddress({ navigation, navigationLocation }) {
     ) {
       setInputs((current) => {
         return {
-          name: { value: current.name.value, isValid: nameIsValid },
-          surname: { value: current.surname.value, isValid: surnameIsValid },
           address: { value: current.address.value, isValid: addressIsValid },
           city: { value: current.city.value, isValid: cityIsValid },
           country: { value: current.country.value, isValid: countryIsValid },
@@ -66,42 +72,70 @@ export default function EditAddress({ navigation, navigationLocation }) {
       return
     }
 
-    console.log('Save address Func')
+    try {
+      dispatch(
+        setUserFromStorage({
+          ...user,
+          address: address,
+          city: city,
+          country: country,
+          postal: postal,
+          phone: phone,
+        })
+      )
 
-    // DISPATCH
-    // DB
+      const userRef = doc(db, 'users', user.email)
+      const userSnap = await updateDoc(userRef, {
+        address: address,
+        city: city,
+        country: country,
+        postal: postal,
+        phone: phone,
+      })
+
+      navigation.navigate(`${navLoc}`)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
     <>
-      {/* <BackIcon onPress={() => navigation.navigate('ManageAddress')} /> */}
-      <BackIcon onPress={() => navigation.navigate(`${navigationLocation}`)} />
-      <ContinueBtn title={'Save'} onPress={onSubmit} />
+      <BackIcon
+        onPress={() =>
+          navigation.navigate(
+            `${navigationLocation ? navigationLocation : 'ManageAddress'}`
+          )
+        }
+      />
+      {!unsetSave && (
+        <ContinueBtn title={'Save'} onPress={() => onSubmit('ManageAddress')} />
+      )}
+      {setContinue && (
+        <ContinueBtn title={'Continue'} onPress={() => onSubmit('Summary')} />
+      )}
+
       <ScrollView style={styles.container}>
         <Change title={'edit address'} />
         <FloatingLabel
-          label={'Name'}
+          label={user.name}
           textConfig={{
-            onChangeText: inputHandler.bind(this, 'name'),
+            selectTextOnFocus: false,
+            editable: false,
           }}
-          value={inputs.name.value}
+          value={''}
           color={'#cecece'}
         />
-        {!inputs.name.isValid && (
-          <ValidationMessage message={'Please enter your name'} />
-        )}
 
         <FloatingLabel
-          label={'Surname'}
+          label={user.surname}
           textConfig={{
-            onChangeText: inputHandler.bind(this, 'surname'),
+            selectTextOnFocus: false,
+            editable: false,
           }}
-          value={inputs.surname.value}
+          value={''}
           color={'#cecece'}
         />
-        {!inputs.surname.isValid && (
-          <ValidationMessage message={'Please enter your surname'} />
-        )}
 
         <FloatingLabel
           label={'Address'}
@@ -112,7 +146,7 @@ export default function EditAddress({ navigation, navigationLocation }) {
           color={'#cecece'}
         />
         {!inputs.address.isValid && (
-          <ValidationMessage message={'Please enter your surname'} />
+          <ValidationMessage message={'Please enter your address'} />
         )}
 
         <FloatingLabel

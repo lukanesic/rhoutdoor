@@ -7,23 +7,42 @@ import { FloatingLabel } from '../../../components/FloatingLabel'
 import ContinueBtn from '../../../components/ContinueBtn'
 import ValidationMessage from '../../../components/ValidationMessage'
 
+import { auth } from '../../../firebase'
+import { signInWithEmailAndPassword, updatePassword } from '@firebase/auth'
+
+import { AntDesign } from '@expo/vector-icons'
+import { useSelector } from 'react-redux'
+
 export default function ChangePassword({ navigation }) {
+  const { user } = useSelector((state) => state.user)
+
   const [inputs, setInputs] = useState({
-    email: { value: 'customer@gmail.com', isValid: true },
-    oldPassword: { value: '', isValid: true },
-    newPassword: { value: '', isValid: true },
+    oldPassword: {
+      value: '',
+      validation: {
+        isValid: true,
+        validationMessage: '',
+      },
+    },
+    newPassword: {
+      value: '',
+      validation: { isValid: true, validationMessage: '' },
+    },
   })
 
   const inputHandler = (identifier, val) => {
     setInputs((current) => {
       return {
         ...current,
-        [identifier]: { value: val, isValid: true },
+        [identifier]: {
+          value: val,
+          validation: { isValid: true, validationMessage: '' },
+        },
       }
     })
   }
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     const oldPassword = inputs.oldPassword.value
     const newPassword = inputs.newPassword.value
 
@@ -33,21 +52,61 @@ export default function ChangePassword({ navigation }) {
     if (!passwordIsValid || !newPassword) {
       setInputs((current) => {
         return {
-          email: {
-            value: 'customer@gmail.com',
-            isValid: true,
-          },
           oldPassword: {
             value: current.oldPassword.value,
-            isValid: passwordIsValid,
+            validation: {
+              isValid: passwordIsValid,
+              validationMessage:
+                'Your password must contain more than 7 characters',
+            },
           },
           newPassword: {
             value: current.newPassword.value,
-            isValid: newPasswordIsValid,
+            validation: {
+              isValid: newPasswordIsValid,
+              validationMessage:
+                'Your password must contain more than 7 characters',
+            },
           },
         }
       })
       return
+    }
+
+    try {
+      const res = await signInWithEmailAndPassword(
+        auth,
+        user.email,
+        oldPassword
+      )
+      await updatePassword(auth.currentUser, newPassword)
+      setTimeout(() => {
+        navigation.navigate('ManageAccount')
+      }, 1000)
+    } catch (error) {
+      console.log(error.code)
+      const wrongPass = error.code === 'auth/wrong-password'
+
+      if (wrongPass) {
+        setInputs((current) => {
+          return {
+            oldPassword: {
+              value: current.oldPassword.value,
+              validation: {
+                isValid: !wrongPass,
+                validationMessage: 'Wrong password. Try again',
+              },
+            },
+            newPassword: {
+              value: current.newPassword.value,
+              validation: {
+                isValid: true,
+                validationMessage: '',
+              },
+            },
+          }
+        })
+      }
     }
   }
 
@@ -74,10 +133,13 @@ export default function ChangePassword({ navigation }) {
           value={inputs.oldPassword.value}
           color={'#000'}
         />
-        {!inputs.oldPassword.isValid && (
-          <ValidationMessage
-            message={'Your password must contain more than 7 characters'}
-          />
+        {!inputs.oldPassword.validation.isValid && (
+          <View style={styles.validateContainer}>
+            <AntDesign name='exclamationcircleo' size={12} color='red' />
+            <Text style={styles.validate}>
+              {inputs.oldPassword.validation.validationMessage}
+            </Text>
+          </View>
         )}
 
         <FloatingLabel
@@ -89,10 +151,13 @@ export default function ChangePassword({ navigation }) {
           value={inputs.newPassword.value}
           color={'#000'}
         />
-        {!inputs.newPassword.isValid && (
-          <ValidationMessage
-            message={'Your password must contain more than 7 characters'}
-          />
+        {!inputs.newPassword.validation.isValid && (
+          <View style={styles.validateContainer}>
+            <AntDesign name='exclamationcircleo' size={12} color='red' />
+            <Text style={styles.validate}>
+              {inputs.newPassword.validation.validationMessage}
+            </Text>
+          </View>
         )}
       </ScrollView>
     </>
@@ -105,5 +170,17 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     paddingTop: 100,
     paddingHorizontal: 25,
+  },
+  validateContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 5,
+  },
+  validate: {
+    color: '#ff1c1b',
+
+    fontSize: 12,
+    marginLeft: 5,
   },
 })

@@ -6,9 +6,9 @@ import { auth, db } from '../firebase'
 
 export const fetchUser = createAsyncThunk(
   'userSlice/fetchUser',
-  async ({ email, token }) => {
+  async ({ id, token }) => {
     try {
-      const userRef = doc(db, 'users', email)
+      const userRef = doc(db, 'users', id)
       const userSnap = await getDoc(userRef)
 
       return { token: token, ...userSnap.data() }

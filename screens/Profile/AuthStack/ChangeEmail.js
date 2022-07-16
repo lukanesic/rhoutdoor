@@ -7,13 +7,29 @@ import { FloatingLabel } from '../../../components/FloatingLabel'
 import ContinueBtn from '../../../components/ContinueBtn'
 import ValidationMessage from '../../../components/ValidationMessage'
 
+import { AntDesign } from '@expo/vector-icons'
+
+import { auth } from '../../../firebase'
+import { updateEmail, signInWithEmailAndPassword } from '@firebase/auth'
+import { doc, updateDoc } from 'firebase/firestore'
+import { db } from '../../../firebase'
+
 import { useSelector } from 'react-redux'
 
 export default function ChangeEmail({ navigation }) {
   const [inputs, setInputs] = useState({
-    currentPassword: { value: '', isValid: true },
-    newEmail: { value: '', isValid: true },
-    repeatEmail: { value: '', isValid: true },
+    currentPassword: {
+      value: '',
+      validation: { isValid: true, validationMessage: '' },
+    },
+    newEmail: {
+      value: '',
+      validation: { isValid: true, validationMessage: '' },
+    },
+    repeatEmail: {
+      value: '',
+      validation: { isValid: true, validationMessage: '' },
+    },
   })
 
   const { user } = useSelector((state) => state.user)
@@ -22,12 +38,15 @@ export default function ChangeEmail({ navigation }) {
     setInputs((current) => {
       return {
         ...current,
-        [identifier]: { value: val, isValid: true },
+        [identifier]: {
+          value: val,
+          validation: { isValid: true, validationMessage: '' },
+        },
       }
     })
   }
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     const currPass = inputs.currentPassword.value
     const newE = inputs.newEmail.value
     const repeat = inputs.repeatEmail.value
@@ -41,16 +60,95 @@ export default function ChangeEmail({ navigation }) {
         return {
           currentPassword: {
             value: current.currentPassword.value,
-            isValid: passwordIsValid,
+            validation: {
+              isValid: passwordIsValid,
+              validationMessage:
+                'Your password must contain more than 7 characters',
+            },
           },
-          newEmail: { value: current.newEmail.value, isValid: emailIsValid },
+          newEmail: {
+            value: current.newEmail.value,
+            validation: {
+              isValid: emailIsValid,
+              validationMessage: 'Please enter valid email address',
+            },
+          },
           repeatEmail: {
             value: current.repeatEmail.value,
-            isValid: repeatEmailIsValid,
+            validation: {
+              isValid: repeatEmailIsValid,
+              validationMessage: `Your email doesn't match. Try again`,
+            },
           },
         }
       })
       return
+    }
+
+    try {
+      // Auth
+      const res = await signInWithEmailAndPassword(auth, user.email, currPass)
+      const update = await updateEmail(auth.currentUser, newE)
+
+      // DB
+      const userRef = doc(db, 'users', user.id)
+      const updateUser = await updateDoc(userRef, {
+        email: newE,
+      })
+
+      // console.log(updateUser)
+
+      setTimeout(() => {
+        navigation.navigate('ManageAccount')
+      }, 1000)
+      //  VRATI IMPUTE NA NULU
+      setInputs(() => {
+        return {
+          currentPassword: {
+            value: '',
+            validation: { isValid: true, validationMessage: '' },
+          },
+          newEmail: {
+            value: '',
+            validation: { isValid: true, validationMessage: '' },
+          },
+          repeatEmail: {
+            value: '',
+            validation: { isValid: true, validationMessage: '' },
+          },
+        }
+      })
+    } catch (error) {
+      console.log(error.code)
+      const wrongPass = error.code === 'auth/wrong-password'
+
+      if (wrongPass) {
+        setInputs((current) => {
+          return {
+            currentPassword: {
+              value: current.currentPassword.value,
+              validation: {
+                isValid: !wrongPass,
+                validationMessage: 'Wrong password. Try again',
+              },
+            },
+            newEmail: {
+              value: current.newEmail.value,
+              validation: {
+                isValid: true,
+                validationMessage: '',
+              },
+            },
+            repeatEmail: {
+              value: current.repeatEmail.value,
+              validation: {
+                isValid: true,
+                validationMessage: '',
+              },
+            },
+          }
+        })
+      }
     }
   }
 
@@ -77,10 +175,14 @@ export default function ChangeEmail({ navigation }) {
           value={inputs.currentPassword.value}
           color={'#000'}
         />
-        {!inputs.currentPassword.isValid && (
-          <ValidationMessage
-            message={'Your password must contain more than 7 characters'}
-          />
+
+        {!inputs.currentPassword.validation.isValid && (
+          <View style={styles.validateContainer}>
+            <AntDesign name='exclamationcircleo' size={12} color='red' />
+            <Text style={styles.validate}>
+              {inputs.currentPassword.validation.validationMessage}
+            </Text>
+          </View>
         )}
 
         <FloatingLabel
@@ -91,8 +193,13 @@ export default function ChangeEmail({ navigation }) {
           value={inputs.newEmail.value}
           color={'#000'}
         />
-        {!inputs.newEmail.isValid && (
-          <ValidationMessage message={'Please enter valid email address'} />
+        {!inputs.newEmail.validation.isValid && (
+          <View style={styles.validateContainer}>
+            <AntDesign name='exclamationcircleo' size={12} color='red' />
+            <Text style={styles.validate}>
+              {inputs.newEmail.validation.validationMessage}
+            </Text>
+          </View>
         )}
 
         <FloatingLabel
@@ -103,8 +210,13 @@ export default function ChangeEmail({ navigation }) {
           value={inputs.repeatEmail.value}
           color={'#000'}
         />
-        {!inputs.repeatEmail.isValid && (
-          <ValidationMessage message={`Your email doesn't match. Try again`} />
+        {!inputs.repeatEmail.validation.isValid && (
+          <View style={styles.validateContainer}>
+            <AntDesign name='exclamationcircleo' size={12} color='red' />
+            <Text style={styles.validate}>
+              {inputs.repeatEmail.validation.validationMessage}
+            </Text>
+          </View>
         )}
       </ScrollView>
     </>
@@ -117,5 +229,17 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     paddingTop: 100,
     paddingHorizontal: 25,
+  },
+  validateContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 5,
+  },
+  validate: {
+    color: '#ff1c1b',
+
+    fontSize: 12,
+    marginLeft: 5,
   },
 })

@@ -10,44 +10,46 @@ import React from 'react'
 import BackIcon from './../../../components/BackIcon'
 import ForwardScreen from '../../../components/ForwardScreen'
 import Btn from '../../../components/profile/user/Btn'
+import { useSelector } from 'react-redux'
 
 export default function ManageAddresses({ navigation }) {
+  const { user } = useSelector((state) => state.user)
+
   return (
     <>
       <BackIcon onPress={() => navigation.navigate('UserProfile')} />
 
       <ScrollView style={styles.manageContainer}>
-        <Text style={styles.manageTitle}>Addresses</Text>
+        <Text style={styles.manageTitle}>Address</Text>
 
         {/* Map ako ima vise naravno */}
-        <Address
-          name={'Customer'}
-          country={'Serbia'}
-          onPress={() => navigation.navigate('EditAddress')}
-        />
-        <Address name={'Customer'} country={'Serbia'} />
-        <Address name={'Customer'} country={'Serbia'} />
-        <Address name={'Customer'} country={'Serbia'} />
+        {Object.keys(user).includes('address') && (
+          <Address
+            address={user.address}
+            country={user.country}
+            onPress={() => navigation.navigate('EditAddress')}
+          />
+        )}
       </ScrollView>
 
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={styles.btnContainer}
         onPress={() => navigation.navigate('EditAddress')}
       >
         <Text style={styles.btnTxt}>Add another Address</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </>
   )
 }
 
-const Address = ({ name, country, onPress }) => {
+const Address = ({ address, country, onPress }) => {
   return (
-    <View>
-      <ForwardScreen title={name} onPress={onPress} />
+    <TouchableOpacity onPress={onPress}>
+      <ForwardScreen title={address} onPress={onPress} />
       <View>
-        <Text style={styles.countryTxt}>Edit</Text>
+        <Text style={styles.countryTxt}>{country}</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   )
 }
 

@@ -19,6 +19,8 @@ export default function Summary({ navigation }) {
         <EditAddress
           navigation={navigation}
           navigationLocation={'CartScreen'}
+          unsetSave
+          setContinue
         />
       )}
     </View>

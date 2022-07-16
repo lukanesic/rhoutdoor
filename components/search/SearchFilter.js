@@ -43,8 +43,6 @@ export default function SearchFilter({
     Keyboard.dismiss()
   }
 
-  console.log(`${activeCategory} from SearchFilter`)
-
   return (
     <View style={styles.container}>
       {subCats
