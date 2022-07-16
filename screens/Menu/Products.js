@@ -36,6 +36,7 @@ export default function Products({ navigation }) {
           background={'#fff'}
           marginTop={220}
           navigation={navigation}
+          navigationLocation={'Product'}
         />
       )}
     </View>

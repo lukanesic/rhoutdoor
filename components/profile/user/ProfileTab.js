@@ -15,8 +15,6 @@ const { width } = Dimensions.get('window')
 export default function ProfileTab({ navigation }) {
   const { user } = useSelector((state) => state.user)
 
-  console.log(user)
-
   return (
     <View style={styles.container}>
       <Text style={styles.name}>

@@ -1,62 +1,23 @@
-import { View, Text, StyleSheet, ScrollView } from 'react-native'
-import React, { useState } from 'react'
+import { NavigationContainer } from '@react-navigation/native'
+import { createStackNavigator } from '@react-navigation/stack'
+import Searching from './Search/Searching'
+import SearchProduct from './Search/SearchProduct'
 
-import Categories from '../components/search/Categories'
-import SearchBar from '../components/search/SearchBar'
-import Trends from '../components/search/Trends'
-import Title from '../components/Title'
-import RecentlyViewed from '../components/search/RecentlyViewed'
+const Stack = createStackNavigator()
 
-import SearchFilter from '../components/search/SearchFilter'
-import SearchResults from '../components/search/SearchResults'
-
-const Search = ({ navigation }) => {
-  const [useSearch, setUseSearch] = useState('')
-  const [filtered, setFiltered] = useState('')
-
-  const [activeCategory, setActiveCategory] = useState('Furniture')
-
+const Search = () => {
   return (
-    <View style={styles.container}>
-      <Title />
-      <Categories active={activeCategory} setActive={setActiveCategory} />
-      <SearchBar
-        search={useSearch}
-        setSearch={setUseSearch}
-        setFiltered={setFiltered}
-      />
-
-      {filtered !== '' && <SearchResults navigation={navigation} />}
-
-      {filtered === '' && (
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <Trends
-            search={useSearch}
-            setSearch={setUseSearch}
-            setFiltered={setFiltered}
-            filtered={filtered}
-          />
-          <RecentlyViewed setSearch={setUseSearch} setFiltered={setFiltered} />
-          {useSearch !== '' && (
-            <SearchFilter
-              search={useSearch}
-              setSearch={setUseSearch}
-              setFiltered={setFiltered}
-              activeCategory={activeCategory}
-              setActiveCategory={setActiveCategory}
-            />
-          )}
-        </ScrollView>
-      )}
-    </View>
+    <NavigationContainer independent={true}>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
+        <Stack.Screen name='Searching' component={Searching} />
+        <Stack.Screen name='SearchProduct' component={SearchProduct} />
+      </Stack.Navigator>
+    </NavigationContainer>
   )
 }
 
 export default Search
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#000',
-  },
-})

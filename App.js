@@ -120,7 +120,7 @@ const Tabs = () => {
 // const Product = () => {
 //   return (
 //     <Stack.Navigator>
-//       <Stack.Screen name='Products' component={Products} />
+//       <Stack.Screen name='Product' component={Product} />
 //     </Stack.Navigator>
 //   )
 // }

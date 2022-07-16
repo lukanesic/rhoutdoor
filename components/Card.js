@@ -10,12 +10,12 @@ import React from 'react'
 
 const width = Dimensions.get('window').width / 2 - 25
 
-export default function Card({ item, color, navigation }) {
+export default function Card({ item, color, navigation, navigationLocation }) {
   return (
     <View style={styles.card}>
       <TouchableOpacity
         activeOpacity={0.7}
-        onPress={() => navigation.navigate('Product', item)}
+        onPress={() => navigation.navigate(`${navigationLocation}`, item)}
       >
         <Image style={styles.image} source={{ uri: item.images[1] }} />
       </TouchableOpacity>
